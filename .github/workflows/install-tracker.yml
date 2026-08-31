@@ -1,0 +1,45 @@
+name: Install Bot Click Tracker
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  install-tracker:
+    if: github.event_name == 'workflow_dispatch' || !contains(github.event.head_commit.message, '[tracker-installed]')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Add tracker to HTML pages
+        shell: python
+        run: |
+          from pathlib import Path
+          tag = '<script src="https://01pandaa.github.io/bot-tiklama-engelleme/tracker/tracker.js" defer></script>'
+          for path in Path('.').rglob('*.html'):
+              if '.git' in path.parts:
+                  continue
+              text = path.read_text(encoding='utf-8')
+              if 'bot-tiklama-engelleme/tracker/tracker.js' in text:
+                  continue
+              marker = '</head>'
+              if marker in text:
+                  path.write_text(text.replace(marker, tag + marker, 1), encoding='utf-8')
+
+      - name: Commit tracker installation
+        shell: bash
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add '*.html' '**/*.html'
+          if git diff --cached --quiet; then
+            echo 'Tracker already installed.'
+            exit 0
+          fi
+          git commit -m 'Install bot click tracker [tracker-installed]'
+          git push
