@@ -1,0 +1,44 @@
+name: Add Instagram link
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  add-instagram:
+    if: github.event_name == 'push' && !contains(github.event.head_commit.message, '[instagram-installed]')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Add Instagram link to HTML pages
+        shell: python
+        run: |
+          from pathlib import Path
+          link = '<a href="https://www.instagram.com/webportalfaaliyetleri/" target="_blank" rel="noopener noreferrer" aria-label="Web Portal Faaliyetleri Instagram" style="position:fixed;right:20px;bottom:80px;z-index:9999;padding:10px 14px;border-radius:999px;background:#111;color:#fff;font:700 13px Arial,sans-serif;text-decoration:none;box-shadow:0 8px 24px rgba(0,0,0,.25)">Instagram</a>'
+          for path in Path('.').rglob('*.html'):
+              if '.git' in path.parts:
+                  continue
+              text = path.read_text(encoding='utf-8')
+              if 'instagram.com/webportalfaaliyetleri' in text:
+                  continue
+              if '</body>' in text:
+                  text = text.replace('</body>', link + '</body>', 1)
+                  path.write_text(text, encoding='utf-8')
+
+      - name: Commit Instagram links
+        shell: bash
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -- '*.html'
+          if git diff --cached --quiet; then
+            echo 'Instagram links already installed.'
+            exit 0
+          fi
+          git commit -m 'Add official Instagram link [instagram-installed]'
+          git push
