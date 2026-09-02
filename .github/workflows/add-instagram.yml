@@ -15,10 +15,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Add contact actions, normalize canonical host and connect service regions
+      - name: Maintain contact actions, SEO URLs and service regions
         shell: python
         run: |
           from pathlib import Path
+          import re
 
           actions = '''<div class="floating-actions" aria-label="Hızlı iletişim">
             <a class="float-whatsapp" href="https://wa.me/905451944026" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp ile iletişime geç">WhatsApp</a>
@@ -28,14 +29,7 @@ jobs:
           old_host = 'https://webportalfaaliyetleri.com'
           new_host = 'https://www.webportalfaaliyetleri.com'
 
-          home_old_istanbul = '''<article class="city-card"><span class="city-label">SIRADAKİ BÖLGE</span><h3>İstanbul</h3><p>İstanbul için yerel hizmet, rekabet ve sektör bazlı arama niyetlerine göre yeni şehir sayfaları hazırlanıyor.</p></article>'''
-          home_new_istanbul = '''<article class="city-card featured"><span class="city-label">AKTİF BÖLGE</span><h3>İstanbul</h3><p>İstanbul'da Google Ads çalışmalarını şehir geneliyle sınırlamıyor; Kadıköy, Beşiktaş, Şişli, Ataşehir, Ümraniye ve Bakırköy gibi önemli ilçelerde yerel arama niyetlerini ayrıca ele alıyoruz.</p><a href="/istanbul-google-ads/">İstanbul Google Ads Ajansı →</a><a href="/istanbul-google-ads/kadikoy/">Kadıköy</a><a href="/istanbul-google-ads/besiktas/">Beşiktaş</a><a href="/istanbul-google-ads/sisli/">Şişli</a><a href="/istanbul-google-ads/atasehir/">Ataşehir</a><a href="/istanbul-google-ads/umraniye/">Ümraniye</a><a href="/istanbul-google-ads/bakirkoy/">Bakırköy</a></article>'''
-
-          home_old_ankara = '''<article class="city-card"><span class="city-label">SIRADAKİ BÖLGE</span><h3>Ankara</h3><p>Ankara'da kurumsal hizmetler, profesyonel işletmeler ve yerel aramalar için ayrı içerik mimarisi oluşturulacak.</p></article>'''
-          home_new_ankara = '''<article class="city-card featured"><span class="city-label">AKTİF BÖLGE</span><h3>Ankara</h3><p>Ankara'da Google Ads çalışmalarını şehir geneliyle sınırlamıyor; Çankaya, Keçiören, Yenimahalle, Etimesgut, Sincan ve Altındağ gibi önemli ilçelerde farklı arama niyetlerini ayrıca ele alıyoruz.</p><a href="/ankara-google-ads/">Ankara Google Ads Ajansı →</a></article>'''
-
-          home_old_mersin = '''<article class="city-card"><span class="city-label">SIRADAKİ BÖLGE</span><h3>Mersin</h3><p>Mersin'de yerel işletmeler, hizmet aramaları ve bölgesel reklam ihtiyaçları için yeni sayfalar hazırlanıyor.</p></article>'''
-          home_new_mersin = '''<article class="city-card featured"><span class="city-label">AKTİF BÖLGE</span><h3>Mersin</h3><p>Mersin'de Google Ads çalışmalarını şehir geneliyle sınırlamıyor; Yenişehir, Mezitli, Toroslar, Akdeniz ve Tarsus gibi önemli bölgelerde farklı arama niyetlerini ayrıca ele alıyoruz.</p><a href="/mersin-google-ads/">Mersin Google Ads Ajansı →</a></article>'''
+          mersin = '''<article class="city-card featured"><span class="city-label">AKTİF BÖLGE</span><h3>Mersin</h3><p>Mersin'de Google Ads çalışmalarını şehir geneliyle sınırlamıyor; Yenişehir, Mezitli, Toroslar, Akdeniz ve Tarsus gibi önemli bölgelerde farklı arama niyetlerini ayrıca ele alıyoruz.</p><a href="/mersin-google-ads/">Mersin Google Ads Ajansı →</a></article>'''
 
           for path in Path('.').rglob('*.html'):
               if '.git' in path.parts:
@@ -44,9 +38,13 @@ jobs:
               original = text
               text = text.replace(old_host, new_host)
               if path.as_posix() == 'index.html':
-                  text = text.replace(home_old_istanbul, home_new_istanbul, 1)
-                  text = text.replace(home_old_ankara, home_new_ankara, 1)
-                  text = text.replace(home_old_mersin, home_new_mersin, 1)
+                  pattern = r'<article class="city-card(?: featured)?"><span class="city-label">SIRADAKİ BÖLGE</span><h3>Mersin</h3>.*?</article>'
+                  text, count = re.subn(pattern, mersin, text, count=1, flags=re.S)
+                  if count == 0 and '/mersin-google-ads/' not in text:
+                      marker = '<article class="city-card"><span class="city-label">SIRADAKİ BÖLGE</span><h3>Mersin</h3>'
+                      if marker in text:
+                          text = text.replace(marker, '<article class="city-card featured"><span class="city-label">AKTİF BÖLGE</span><h3>Mersin</h3>', 1)
+                          text = text.replace('</article>', '<a href="/mersin-google-ads/">Mersin Google Ads Ajansı →</a></article>', 1)
               if 'class="float-whatsapp"' not in text and '</body>' in text:
                   text = text.replace('</body>', actions + '</body>', 1)
               if text != original:
@@ -62,5 +60,5 @@ jobs:
             echo 'No site maintenance changes needed.'
             exit 0
           fi
-          git commit -m 'Connect service region links [site-maintenance]'
+          git commit -m 'Connect Mersin service region link [site-maintenance]'
           git push
