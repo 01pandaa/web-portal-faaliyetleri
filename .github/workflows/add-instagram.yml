@@ -1,4 +1,4 @@
-name: Add contact actions to HTML pages
+name: Add contact actions and normalize SEO URLs
 
 on:
   push:
@@ -8,14 +8,14 @@ permissions:
   contents: write
 
 jobs:
-  add-contact-actions:
-    if: github.event_name == 'push' && !contains(github.event.head_commit.message, '[contact-actions-installed]')
+  site-maintenance:
+    if: github.event_name == 'push' && !contains(github.event.head_commit.message, '[site-maintenance]')
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Add WhatsApp and call buttons to HTML pages
+      - name: Add contact actions and normalize canonical host
         shell: python
         run: |
           from pathlib import Path
@@ -25,25 +25,34 @@ jobs:
             <a class="float-call" href="tel:+905451944026" aria-label="Web Portal Faaliyetleri'ni ara">Hemen Ara</a>
           </div>'''
 
+          old_host = 'https://webportalfaaliyetleri.com'
+          new_host = 'https://www.webportalfaaliyetleri.com'
+
           for path in Path('.').rglob('*.html'):
               if '.git' in path.parts:
                   continue
               text = path.read_text(encoding='utf-8')
-              if 'class="float-whatsapp"' in text:
-                  continue
-              if '</body>' in text:
+              original = text
+
+              # Keep one preferred HTTPS host everywhere in SEO metadata and structured data.
+              text = text.replace(old_host, new_host)
+
+              # Ensure every HTML page has the contact action group.
+              if 'class="float-whatsapp"' not in text and '</body>' in text:
                   text = text.replace('</body>', actions + '</body>', 1)
+
+              if text != original:
                   path.write_text(text, encoding='utf-8')
 
-      - name: Commit contact actions
+      - name: Commit site maintenance changes
         shell: bash
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add -- '*.html'
           if git diff --cached --quiet; then
-            echo 'Contact actions already installed.'
+            echo 'No site maintenance changes needed.'
             exit 0
           fi
-          git commit -m 'Add WhatsApp and call buttons to all pages [contact-actions-installed]'
+          git commit -m 'Normalize canonical host and contact actions [site-maintenance]'
           git push
