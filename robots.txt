@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /admin/
 Disallow: /panel/
-Sitemap: https://webportalfaaliyetleri.com/sitemap.xml
+Sitemap: https://www.webportalfaaliyetleri.com/sitemap.xml
