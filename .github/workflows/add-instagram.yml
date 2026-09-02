@@ -28,23 +28,23 @@ jobs:
           old_host = 'https://webportalfaaliyetleri.com'
           new_host = 'https://www.webportalfaaliyetleri.com'
 
-          home_old = '''<article class="city-card"><span class="city-label">SIRADAKİ BÖLGE</span><h3>İstanbul</h3><p>İstanbul için yerel hizmet, rekabet ve sektör bazlı arama niyetlerine göre yeni şehir sayfaları hazırlanıyor.</p></article>'''
-          home_new = '''<article class="city-card featured"><span class="city-label">AKTİF BÖLGE</span><h3>İstanbul</h3><p>İstanbul'da Google Ads çalışmalarını şehir geneliyle sınırlamıyor; Kadıköy, Beşiktaş, Şişli, Ataşehir, Ümraniye ve Bakırköy gibi önemli ilçelerde yerel arama niyetlerini ayrıca ele alıyoruz.</p><a href="/istanbul-google-ads/">İstanbul Google Ads Ajansı →</a><a href="/istanbul-google-ads/kadikoy/">Kadıköy</a><a href="/istanbul-google-ads/besiktas/">Beşiktaş</a><a href="/istanbul-google-ads/sisli/">Şişli</a><a href="/istanbul-google-ads/atasehir/">Ataşehir</a><a href="/istanbul-google-ads/umraniye/">Ümraniye</a><a href="/istanbul-google-ads/bakirkoy/">Bakırköy</a></article>'''
+          home_old_istanbul = '''<article class="city-card"><span class="city-label">SIRADAKİ BÖLGE</span><h3>İstanbul</h3><p>İstanbul için yerel hizmet, rekabet ve sektör bazlı arama niyetlerine göre yeni şehir sayfaları hazırlanıyor.</p></article>'''
+          home_new_istanbul = '''<article class="city-card featured"><span class="city-label">AKTİF BÖLGE</span><h3>İstanbul</h3><p>İstanbul'da Google Ads çalışmalarını şehir geneliyle sınırlamıyor; Kadıköy, Beşiktaş, Şişli, Ataşehir, Ümraniye ve Bakırköy gibi önemli ilçelerde yerel arama niyetlerini ayrıca ele alıyoruz.</p><a href="/istanbul-google-ads/">İstanbul Google Ads Ajansı →</a><a href="/istanbul-google-ads/kadikoy/">Kadıköy</a><a href="/istanbul-google-ads/besiktas/">Beşiktaş</a><a href="/istanbul-google-ads/sisli/">Şişli</a><a href="/istanbul-google-ads/atasehir/">Ataşehir</a><a href="/istanbul-google-ads/umraniye/">Ümraniye</a><a href="/istanbul-google-ads/bakirkoy/">Bakırköy</a></article>'''
+
+          home_old_ankara = '''<article class="city-card"><span class="city-label">SIRADAKİ BÖLGE</span><h3>Ankara</h3><p>Ankara'da kurumsal hizmetler, profesyonel işletmeler ve yerel aramalar için ayrı içerik mimarisi oluşturulacak.</p></article>'''
+          home_new_ankara = '''<article class="city-card featured"><span class="city-label">AKTİF BÖLGE</span><h3>Ankara</h3><p>Ankara'da Google Ads çalışmalarını şehir geneliyle sınırlamıyor; Çankaya, Keçiören, Yenimahalle, Etimesgut, Sincan ve Altındağ gibi önemli ilçelerde farklı arama niyetlerini ayrıca ele alıyoruz.</p><a href="/ankara-google-ads/">Ankara Google Ads Ajansı →</a></article>'''
 
           for path in Path('.').rglob('*.html'):
               if '.git' in path.parts:
                   continue
               text = path.read_text(encoding='utf-8')
               original = text
-
               text = text.replace(old_host, new_host)
-
               if path.as_posix() == 'index.html':
-                  text = text.replace(home_old, home_new, 1)
-
+                  text = text.replace(home_old_istanbul, home_new_istanbul, 1)
+                  text = text.replace(home_old_ankara, home_new_ankara, 1)
               if 'class="float-whatsapp"' not in text and '</body>' in text:
                   text = text.replace('</body>', actions + '</body>', 1)
-
               if text != original:
                   path.write_text(text, encoding='utf-8')
 
@@ -58,5 +58,5 @@ jobs:
             echo 'No site maintenance changes needed.'
             exit 0
           fi
-          git commit -m 'Connect İstanbul service region links [site-maintenance]'
+          git commit -m 'Connect service region links [site-maintenance]'
           git push
