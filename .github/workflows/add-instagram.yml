@@ -32,22 +32,6 @@ jobs:
           mersin = '''<article class="city-card featured"><span class="city-label">AKTİF BÖLGE</span><h3>Mersin</h3><p>Mersin'de Google Ads çalışmalarını şehir geneliyle sınırlamıyor; Yenişehir, Mezitli, Toroslar, Akdeniz ve Tarsus gibi önemli bölgelerde farklı arama niyetlerini ayrıca ele alıyoruz.</p><a href="/mersin-google-ads/">Mersin Google Ads Ajansı →</a></article>'''
 
           brand_video = 'assets/Generating_digital_map_video_seq…_202609031415.mp4'
-          autoplay_script = '''<script>/* WPF-AUTOPLAY-ON-VIEW */
-document.addEventListener('DOMContentLoaded',function(){
-  const videos=document.querySelectorAll('video[data-autoplay-on-view="true"]');
-  if(!videos.length)return;
-  const observer=new IntersectionObserver(function(entries){
-    entries.forEach(function(entry){
-      const video=entry.target;
-      if(entry.isIntersecting && entry.intersectionRatio>=0.35){
-        video.play().catch(function(){});
-      }else{
-        video.pause();
-      }
-    });
-  },{threshold:[0,0.35]});
-  videos.forEach(function(video){observer.observe(video);});
-});</script>'''
 
           for path in Path('.').rglob('*.html'):
               if '.git' in path.parts:
@@ -64,24 +48,18 @@ document.addEventListener('DOMContentLoaded',function(){
                           text = text.replace(marker, '<article class="city-card featured"><span class="city-label">AKTİF BÖLGE</span><h3>Mersin</h3>', 1)
                           text = text.replace('</article>', '<a href="/mersin-google-ads/">Mersin Google Ads Ajansı →</a></article>', 1)
 
-                  # Brand video: bölüm görünür olduğunda otomatik oynat, bölümden çıkınca durdur.
+                  # Video dosya yolu ve tarayıcıların izin verdiği sessiz otomatik oynatma.
+                  text = text.replace('assets/videos/web-portal-faaliyetleri-tanitim.mp4', brand_video)
                   pos = text.find(brand_video)
                   if pos != -1:
                       start = text.rfind('<video', 0, pos)
                       end = text.find('>', start)
                       if start != -1 and end != -1:
                           tag = text[start:end + 1]
-                          for attr in ['autoplay', 'muted', 'playsinline']:
-                              if attr not in tag:
+                          for attr in ('autoplay', 'muted', 'playsinline'):
+                              if not re.search(r'\b' + attr + r'\b', tag):
                                   tag = tag[:-1] + ' ' + attr
-                          if 'preload=' not in tag:
-                              tag = tag[:-1] + ' preload="metadata"'
-                          if 'data-autoplay-on-view' not in tag:
-                              tag = tag[:-1] + ' data-autoplay-on-view="true"'
                           text = text[:start] + tag + text[end + 1:]
-
-                  if 'WPF-AUTOPLAY-ON-VIEW' not in text and '</body>' in text:
-                      text = text.replace('</body>', autoplay_script + '</body>', 1)
 
               if 'class="float-whatsapp"' not in text and '</body>' in text:
                   text = text.replace('</body>', actions + '</body>', 1)
