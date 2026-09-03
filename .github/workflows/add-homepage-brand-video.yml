@@ -1,4 +1,4 @@
-name: Fix homepage brand video path
+name: Fix homepage brand video behavior
 
 on:
   push:
@@ -8,33 +8,73 @@ permissions:
   contents: write
 
 jobs:
-  fix-brand-video-path:
+  fix-brand-video:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Fix homepage video source
+      - name: Configure brand video autoplay
         shell: bash
         run: |
           python3 - <<'PY'
           from pathlib import Path
+          import re
 
           path = Path('index.html')
           html = path.read_text(encoding='utf-8')
-          old = 'assets/videos/web-portal-faaliyetleri-tanitim.mp4'
-          new = 'assets/Generating_digital_map_video_seq…_202609031415.mp4'
+          video_src = 'assets/Generating_digital_map_video_seq…_202609031415.mp4'
 
-          if old not in html:
-              print('Homepage video source already correct or missing; nothing to do.')
+          pos = html.find(video_src)
+          if pos == -1:
+              print('Brand video source not found; nothing to do.')
               raise SystemExit(0)
 
-          html = html.replace(old, new)
+          start = html.rfind('<video', 0, pos)
+          end = html.find('>', start)
+          if start == -1 or end == -1:
+              print('Brand video tag not found; nothing to do.')
+              raise SystemExit(0)
+
+          tag = html[start:end + 1]
+          if 'autoplay' not in tag:
+              tag = tag[:-1] + ' autoplay'
+          if 'muted' not in tag:
+              tag = tag[:-1] + ' muted'
+          if 'playsinline' not in tag:
+              tag = tag[:-1] + ' playsinline'
+          if 'preload=' not in tag:
+              tag = tag[:-1] + ' preload="metadata"'
+          if 'data-autoplay-on-view' not in tag:
+              tag = tag[:-1] + ' data-autoplay-on-view="true"'
+
+          html = html[:start] + tag + html[end + 1:]
+
+          script_marker = 'WPF-AUTOPLAY-ON-VIEW'
+          if script_marker not in html:
+              script = '''<script>/* WPF-AUTOPLAY-ON-VIEW */
+document.addEventListener('DOMContentLoaded',function(){
+  const videos=document.querySelectorAll('video[data-autoplay-on-view="true"]');
+  if(!videos.length)return;
+  const observer=new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      const video=entry.target;
+      if(entry.isIntersecting && entry.intersectionRatio>=0.35){
+        video.play().catch(function(){});
+      }else{
+        video.pause();
+      }
+    });
+  },{threshold:[0,0.35]});
+  videos.forEach(function(video){observer.observe(video);});
+});</script>'''
+              html = html.replace('</body>', script + '</body>')
+
           path.write_text(html, encoding='utf-8')
-          print('Homepage video source corrected.')
+          print('Brand video configured for muted autoplay when visible.')
           PY
 
-      - name: Commit homepage fix
+      - name: Commit homepage video behavior
         run: |
           if git diff --quiet -- index.html; then
             echo "No homepage change needed."
@@ -43,5 +83,5 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add index.html
-          git commit -m "Ana sayfa video dosya yolunu duzelt"
+          git commit -m "Videoyu gorunur olunca otomatik oynat"
           git push
