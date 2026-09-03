@@ -69,3 +69,5 @@ jobs:
               print('\n'.join(missing))
               raise SystemExit(1)
           print('SEO internal link audit başarılı.')
+
+# URL düzeltmesinden sonra audit tekrar çalıştırılacak.
