@@ -1,0 +1,71 @@
+name: SEO Internal Link Audit
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate internal links
+        shell: python
+        run: |
+          from pathlib import Path
+          from html.parser import HTMLParser
+          from urllib.parse import urlparse
+
+          class LinkParser(HTMLParser):
+              def __init__(self):
+                  super().__init__()
+                  self.links = []
+              def handle_starttag(self, tag, attrs):
+                  if tag != 'a':
+                      return
+                  href = dict(attrs).get('href')
+                  if href:
+                      self.links.append(href)
+
+          roots = [p for p in Path('.').rglob('*.html') if '.git' not in p.parts]
+          missing = []
+          checked = 0
+
+          def target_exists(href):
+              parsed = urlparse(href)
+              if parsed.scheme or href.startswith('#'):
+                  return True
+              path = parsed.path
+              if not path.startswith('/'):
+                  return True
+              clean = path.strip('/')
+              if not clean:
+                  return Path('index.html').exists()
+              direct = Path(clean)
+              if direct.is_file():
+                  return True
+              if (direct / 'index.html').is_file():
+                  return True
+              return False
+
+          for html_file in roots:
+              parser = LinkParser()
+              parser.feed(html_file.read_text(encoding='utf-8'))
+              for href in parser.links:
+                  if href.startswith('/'):
+                      checked += 1
+                      if not target_exists(href):
+                          missing.append(f'{html_file}: {href}')
+
+          print(f'Kontrol edilen internal link: {checked}')
+          if missing:
+              print('Eksik internal linkler:')
+              print('\n'.join(missing))
+              raise SystemExit(1)
+          print('SEO internal link audit başarılı.')
