@@ -1,0 +1,48 @@
+name: Google Ads Hub Links
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  enrich-google-ads-hub:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Add Google Ads hub links
+        shell: python
+        run: |
+          from pathlib import Path
+
+          path = Path("google-ads/index.html")
+          html = path.read_text(encoding="utf-8")
+
+          if "google-ads-content-hub" in html:
+              print("Google Ads hub links already present.")
+              raise SystemExit(0)
+
+          block = '''\n<section class="section" id="google-ads-content-hub">\n<div class="section-heading"><span>07</span><h2>Google Ads hakkında karar vermeden önce rehberler</h2></div>\n<p>Google Ads yönetiminde doğru karar vermek için yalnızca hizmet sayfasına bakmak yeterli değildir. Bütçe, anahtar kelime, dönüşüm, AI Max ve trafik kalitesi gibi başlıkların her biri kampanyanın farklı bir parçasını etkiler. Aşağıdaki rehberleri birlikte inceleyerek reklam stratejinizi daha bilinçli değerlendirebilirsiniz.</p>\n<div class="cards">\n<a class="card featured" href="/blog/google-reklam-verme/"><small>ANA REHBER</small><h3>Google'da Reklam Verme</h3><p>Hedef belirlemeden bütçe, reklam metni, dönüşüm takibi ve optimizasyona kadar Google Ads kampanyasının bütününü inceleyin.</p></a>\n<a class="card" href="/blog/google-ads-anahtar-kelime-secimi-2026/"><small>STRATEJİ</small><h3>Anahtar Kelime Seçimi</h3><p>Arama niyeti, eşleme, negatif kelimeler ve ticari değeri olan sorgularla keyword stratejisini kurun.</p></a>\n<a class="card" href="/blog/google-ads-fiyatlari-2026/"><small>BÜTÇE</small><h3>Google Ads Fiyatları ve Bütçe</h3><p>Reklam bütçesi, tıklama maliyeti ve müşteri edinme ekonomisini birlikte değerlendirin.</p></a>\n<a class="card" href="/blog/google-ads-donusum-takibi-2026/"><small>ÖLÇÜMLEME</small><h3>Dönüşüm Takibi</h3><p>Telefon, form, WhatsApp, satış ve diğer değerli aksiyonların nasıl ölçülebileceğini öğrenin.</p></a>\n<a class="card" href="/blog/google-ads-ai-max-2026/"><small>2026 GÜNCEL</small><h3>AI Max</h3><p>Search kampanyalarında yapay zekâ destekli özelliklerin 2026'daki rolünü ve kontrol noktalarını inceleyin.</p></a>\n<a class="card" href="/blog/google-ads-gecersiz-tiklama-2026/"><small>TRAFİK KALİTESİ</small><h3>Geçersiz Tıklamalar</h3><p>Bot, tekrarlı veya şüpheli trafik ile gerçek kullanıcı davranışını birbirinden ayırma yaklaşımını okuyun.</p></a>\n<a class="card" href="/blog/google-ads-yonetimi-2026/"><small>YÖNETİM</small><h3>Google Ads Yönetimi</h3><p>Kampanya kurulumu, optimizasyon, arama terimleri, bütçe ve raporlama sürecini daha yakından inceleyin.</p></a>\n<a class="card" href="/blog/google-ads-ajansi-2026/"><small>AJANS SEÇİMİ</small><h3>Google Ads Ajansı 2026</h3><p>Ajans seçerken hesap sahipliği, ölçüm, raporlama, optimizasyon ve ücret yapısında hangi soruları soracağınızı görün.</p></a>\n</div>\n<div style="margin-top:24px;padding:20px;border-left:4px solid #8bd3c7;background:rgba(139,211,199,.10)">\n<strong>Bir sonraki adım:</strong> İşletmenizin hedefi, bölgesi ve bütçesine göre Google Ads stratejisini konuşmak için <a href="/iletisim/">iletişim sayfamızdan</a> bize ulaşabilirsiniz.\n</div>\n</section>\n'''
+
+          marker = "</main>"
+          if marker not in html:
+              raise SystemExit("</main> bulunamadı; dosya değiştirilmedi.")
+
+          html = html.replace(marker, block + marker, 1)
+          path.write_text(html, encoding="utf-8")
+          print("Google Ads hub links added.")
+
+      - name: Commit changes
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add google-ads/index.html
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+            exit 0
+          fi
+          git commit -m "Google Ads sayfasını içerik merkezi olarak güçlendir"
+          git push
