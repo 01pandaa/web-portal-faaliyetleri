@@ -1,4 +1,4 @@
-name: Add homepage brand video
+name: Fix homepage brand video path
 
 on:
   push:
@@ -8,13 +8,13 @@ permissions:
   contents: write
 
 jobs:
-  add-brand-video:
+  fix-brand-video-path:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Add brand video section
+      - name: Fix homepage video source
         shell: bash
         run: |
           python3 - <<'PY'
@@ -22,29 +22,19 @@ jobs:
 
           path = Path('index.html')
           html = path.read_text(encoding='utf-8')
-          marker = '<!-- WPF-BRAND-VIDEO -->'
+          old = 'assets/videos/web-portal-faaliyetleri-tanitim.mp4'
+          new = 'assets/Generating_digital_map_video_seq…_202609031415.mp4'
 
-          if marker in html:
-              print('Brand video section already exists; nothing to do.')
+          if old not in html:
+              print('Homepage video source already correct or missing; nothing to do.')
               raise SystemExit(0)
 
-          section = '''\n<!-- WPF-BRAND-VIDEO -->\n<section class="section" aria-labelledby="brand-video-title">\n  <div class="section-heading">\n    <span>01</span>\n    <h2 id="brand-video-title">Web Portal Faaliyetleri'ni tanıyın</h2>\n  </div>\n  <div style="background:#0b0f14;color:#fff;border:1px solid #27333b;border-radius:22px;padding:26px;box-shadow:0 18px 50px rgba(0,0,0,.12)">\n    <video controls preload="metadata" playsinline style="display:block;width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:16px;background:#05080b">\n      <source src="assets/videos/web-portal-faaliyetleri-tanitim.mp4" type="video/mp4">\n      Tarayıcınız video oynatmayı desteklemiyor.\n    </video>\n    <div style="padding:22px 4px 4px">\n      <div class="eyebrow" style="color:#8bd3c7">MARKA TANITIMI</div>\n      <h3 style="font-size:clamp(30px,4vw,52px);line-height:1.02;margin:8px 0 12px">Dijitalde görünür olmak değil,<br>doğru stratejiyle büyümek.</h3>\n      <p style="color:#aab4bb;max-width:760px">Google Ads, SEO, web, yerel görünürlük ve reklam güvenliğini aynı dijital ekosistemde buluşturan yaklaşımımızı keşfedin.</p>\n    </div>\n  </div>\n</section>\n'''
-
-          needle = '<div class="marquee-wrap">'
-          start = html.find(needle)
-          if start == -1:
-              raise SystemExit('Marquee section not found; homepage was not changed.')
-
-          end = html.find('</div>', start)
-          if end == -1:
-              raise SystemExit('Marquee closing tag not found; homepage was not changed.')
-          end += len('</div>')
-
-          html = html[:end] + section + html[end:]
+          html = html.replace(old, new)
           path.write_text(html, encoding='utf-8')
+          print('Homepage video source corrected.')
           PY
 
-      - name: Commit homepage change
+      - name: Commit homepage fix
         run: |
           if git diff --quiet -- index.html; then
             echo "No homepage change needed."
@@ -53,5 +43,5 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add index.html
-          git commit -m "Ana sayfaya marka tanitim video alani ekle"
+          git commit -m "Ana sayfa video dosya yolunu duzelt"
           git push
