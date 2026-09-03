@@ -7,7 +7,7 @@ on:
     branches: [main]
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   audit:
@@ -69,3 +69,74 @@ jobs:
               print('\n'.join(missing))
               raise SystemExit(1)
           print('SEO internal link audit başarılı.')
+
+      - name: Configure brand video autoplay on view
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          path = Path('index.html')
+          html = path.read_text(encoding='utf-8')
+          video_src = 'assets/Generating_digital_map_video_seq…_202609031415.mp4'
+
+          # Önce video dosya yolunu güvenli ve güncel hale getir.
+          html = html.replace('assets/videos/web-portal-faaliyetleri-tanitim.mp4', video_src)
+
+          pos = html.find(video_src)
+          if pos == -1:
+              print('Brand video source bulunamadı; autoplay adımı atlandı.')
+              raise SystemExit(0)
+
+          start = html.rfind('<video', 0, pos)
+          end = html.find('>', start)
+          if start == -1 or end == -1:
+              print('Brand video etiketi bulunamadı; autoplay adımı atlandı.')
+              raise SystemExit(0)
+
+          tag = html[start:end + 1]
+          for attr in ['autoplay', 'muted', 'playsinline']:
+              if attr not in tag:
+                  tag = tag[:-1] + ' ' + attr
+          if 'preload=' not in tag:
+              tag = tag[:-1] + ' preload="metadata"'
+          if 'data-autoplay-on-view' not in tag:
+              tag = tag[:-1] + ' data-autoplay-on-view="true"'
+
+          html = html[:start] + tag + html[end + 1:]
+
+          marker = 'WPF-AUTOPLAY-ON-VIEW'
+          if marker not in html:
+              script = '''<script>/* WPF-AUTOPLAY-ON-VIEW */
+document.addEventListener('DOMContentLoaded',function(){
+  const videos=document.querySelectorAll('video[data-autoplay-on-view="true"]');
+  if(!videos.length)return;
+  const observer=new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      const video=entry.target;
+      if(entry.isIntersecting && entry.intersectionRatio>=0.35){
+        video.play().catch(function(){});
+      }else{
+        video.pause();
+      }
+    });
+  },{threshold:[0,0.35]});
+  videos.forEach(function(video){observer.observe(video);});
+});</script>'''
+              html = html.replace('</body>', script + '</body>')
+
+          path.write_text(html, encoding='utf-8')
+          print('Brand video görünür olduğunda otomatik oynatma için ayarlandı.')
+          PY
+
+      - name: Commit brand video behavior
+        run: |
+          if git diff --quiet -- index.html; then
+            echo "No homepage video change needed."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git commit -m "Video gorunur olunca otomatik oynat"
+          git push
