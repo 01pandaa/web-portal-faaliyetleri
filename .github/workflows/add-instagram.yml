@@ -15,7 +15,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Update homepage video
+      - name: Update homepage video behavior
         shell: bash
         run: |
           python3 - <<'PY'
@@ -36,12 +36,45 @@ jobs:
               if start != -1 and end != -1:
                   tag = html[start:end + 1]
                   for attr in ('autoplay', 'muted', 'playsinline'):
-                      if not re.search(r'\\b' + attr + r'\\b', tag):
+                      if not re.search(r'\b' + attr + r'\b', tag):
                           tag = tag[:-1] + ' ' + attr
                   html = html[:start] + tag + html[end + 1:]
 
+          marker = '<!-- WPF-VIDEO-VISIBILITY -->'
+          script = '''
+          <!-- WPF-VIDEO-VISIBILITY -->
+          <script>
+          document.addEventListener('DOMContentLoaded', function () {
+            const video = document.querySelector('#brand-video-title')?.closest('section')?.querySelector('video');
+            if (!video || !('IntersectionObserver' in window)) return;
+
+            video.muted = true;
+            video.setAttribute('muted', '');
+            video.setAttribute('playsinline', '');
+            video.setAttribute('autoplay', '');
+
+            const observer = new IntersectionObserver(function (entries) {
+              entries.forEach(function (entry) {
+                if (entry.isIntersecting && entry.intersectionRatio >= 0.25) {
+                  const promise = video.play();
+                  if (promise) promise.catch(function () {});
+                } else {
+                  video.pause();
+                }
+              });
+            }, { threshold: [0, 0.25, 0.5] });
+
+            observer.observe(video);
+          });
+          </script>
+          '''
+
+          html = re.sub(r'\s*<!-- WPF-VIDEO-VISIBILITY -->\s*<script>.*?</script>\s*', '\n', html, flags=re.S)
+          if marker not in html:
+              html = html.replace('</body>', script + '\n</body>', 1)
+
           path.write_text(html, encoding='utf-8')
-          print('Homepage video autoplay attributes configured.')
+          print('Homepage video now plays when visible and pauses when scrolled away.')
           PY
 
       - name: Commit homepage video update
@@ -54,5 +87,5 @@ jobs:
             echo 'No homepage video changes needed.'
             exit 0
           fi
-          git commit -m 'Video otomatik oynatma ayari'
+          git commit -m 'Videoyu gorunurluge gore oynat ve durdur'
           git push
