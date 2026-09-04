@@ -47,12 +47,10 @@ jobs:
           document.addEventListener('DOMContentLoaded', function () {
             const video = document.querySelector('#brand-video-title')?.closest('section')?.querySelector('video');
             if (!video || !('IntersectionObserver' in window)) return;
-
             video.muted = true;
             video.setAttribute('muted', '');
             video.setAttribute('playsinline', '');
             video.setAttribute('autoplay', '');
-
             const observer = new IntersectionObserver(function (entries) {
               entries.forEach(function (entry) {
                 if (entry.isIntersecting && entry.intersectionRatio >= 0.25) {
@@ -63,29 +61,69 @@ jobs:
                 }
               });
             }, { threshold: [0, 0.25, 0.5] });
-
             observer.observe(video);
           });
           </script>
           '''
-
           html = re.sub(r'\s*<!-- WPF-VIDEO-VISIBILITY -->\s*<script>.*?</script>\s*', '\n', html, flags=re.S)
           if marker not in html:
               html = html.replace('</body>', script + '\n</body>', 1)
-
           path.write_text(html, encoding='utf-8')
-          print('Homepage video now plays when visible and pauses when scrolled away.')
+          print('Homepage video behavior checked.')
           PY
 
-      - name: Commit homepage video update
+      - name: Insert contextual SEO images
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          mapping = {
+              'seo/index.html': ('/assets/seo-dogru-yapi-guclu-gorunurluk.webp', 'SEO hizmetinde teknik altyapı ve güçlü arama görünürlüğü için doğru site yapısı'),
+              'adana-seo-ajansi/index.html': ('/assets/yerel-seo-google-haritalar.webp', 'Yerel SEO ve Google Haritalar görünürlüğü için yerel arama çalışmaları'),
+              'google-ads/index.html': ('/assets/web-portal-faaliyetleri-dijital-pazarlama.webp', 'Google Ads ve dijital pazarlama çalışmalarında ölçülebilir reklam yönetimi'),
+              'dijital-reklam/index.html': ('/assets/web-portal-faaliyetleri-dijital-pazarlama.webp', 'Dijital pazarlama ve çevrim içi reklam çalışmalarının bütünsel görünümü'),
+              'blog/teknik-seo-nedir/index.html': ('/assets/teknik-seo-altyapi.webp', 'Teknik SEO altyapısı, tarama, indeksleme ve site performansı'),
+              'blog/google-ads-anahtar-kelime-secimi-2026/index.html': ('/assets/google-ads-arama-reklamlari.webp', 'Google Ads arama reklamlarında anahtar kelime ve arama niyeti seçimi'),
+              'blog/google-ads-donusum-takibi-2026/index.html': ('/assets/google-ads-donusum-takibi.webp', 'Google Ads dönüşüm takibi ve reklam performansının ölçülmesi'),
+              'blog/google-ads-ai-max-2026/index.html': ('/assets/google-ads-veri-analizi-hedefleme.webp', 'Google Ads AI Max döneminde veri analizi ve hedefleme yaklaşımı'),
+              'blog/google-ads-gecersiz-tiklama-2026/index.html': ('/assets/google-ads-reklam-ziyaret-donusum.webp', 'Google Ads reklam ziyaretleri, trafik kalitesi ve dönüşüm ilişkisi'),
+              'blog/google-ads-nedir/index.html': ('/assets/google-ads-dogru-hedefleme.webp', 'Google Ads kampanyalarında doğru hedefleme ve reklam trafiği'),
+          }
+
+          block_template = '''\n<section class="section" aria-label="İlgili görsel">\n<div style="max-width:980px;margin:0 auto;text-align:center">\n<figure style="margin:0">\n<img src="{src}" alt="{alt}" loading="lazy" decoding="async" style="display:block;width:100%;height:auto;border-radius:22px">\n</figure>\n</div>\n</section>\n'''
+
+          changed = []
+          for path, (src, alt) in mapping.items():
+              p = Path(path)
+              if not p.exists():
+                  continue
+              text = p.read_text(encoding='utf-8')
+              if src in text:
+                  continue
+              hero_pos = text.find('<section class="hero"')
+              if hero_pos < 0:
+                  continue
+              first_section = text.find('<section class="section"', hero_pos)
+              if first_section < 0:
+                  continue
+              text = text[:first_section] + block_template.format(src=src, alt=alt) + text[first_section:]
+              p.write_text(text, encoding='utf-8')
+              changed.append(path)
+          print('Changed files:')
+          for item in changed:
+              print(item)
+          PY
+
+      - name: Commit maintenance updates
         shell: bash
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add index.html
+          git add index.html '*.html'
           if git diff --cached --quiet; then
-            echo 'No homepage video changes needed.'
+            echo 'No maintenance changes needed.'
             exit 0
           fi
-          git commit -m 'Videoyu gorunurluge gore oynat ve durdur'
+          git commit -m 'chore: apply contextual SEO images'
           git push
