@@ -15,6 +15,36 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Repair SEO image metadata
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+
+          # Homepage image metadata.
+          path = Path('index.html')
+          html = path.read_text(encoding='utf-8')
+          image = 'https://www.webportalfaaliyetleri.com/assets/web-portal-faaliyetleri-dijital-pazarlama.webp'
+          if 'property="og:image"' not in html:
+              html = html.replace('<meta property="og:url" content="https://www.webportalfaaliyetleri.com/">', '<meta property="og:url" content="https://www.webportalfaaliyetleri.com/"><meta property="og:image" content="' + image + '">', 1)
+          if '"primaryImageOfPage"' not in html:
+              marker = '<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite"'
+              block = '<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","url":"https://www.webportalfaaliyetleri.com/","primaryImageOfPage":{"@type":"ImageObject","url":"' + image + '"}}</script>'
+              html = html.replace(marker, block + marker, 1)
+          path.write_text(html, encoding='utf-8')
+
+          # Repair malformed Article JSON-LD created by the earlier metadata pass.
+          files = list(Path('blog').glob('*/index.html'))
+          for path in files:
+              html = path.read_text(encoding='utf-8')
+              if '"primaryImageOfPage"' not in html:
+                  continue
+              html = re.sub(r'("mainEntityOfPage"\s*:\s*(?:\{.*?\}|"[^"]+"))\s*"primaryImageOfPage"', r'\1,"primaryImageOfPage"', html, flags=re.S)
+              html = re.sub(r'("primaryImageOfPage"\s*:\s*\{.*?\})\s*,\s*}', r'\1}', html, flags=re.S)
+              path.write_text(html, encoding='utf-8')
+          PY
+
       - name: Update homepage video behavior
         shell: bash
         run: |
@@ -77,15 +107,15 @@ jobs:
           print('Homepage video now plays when visible and pauses when scrolled away.')
           PY
 
-      - name: Commit homepage video update
+      - name: Commit maintenance updates
         shell: bash
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add index.html
+          git add index.html blog/*/index.html
           if git diff --cached --quiet; then
-            echo 'No homepage video changes needed.'
+            echo 'No maintenance changes needed.'
             exit 0
           fi
-          git commit -m 'Videoyu gorunurluge gore oynat ve durdur'
+          git commit -m 'SEO metadata ve JSON-LD teknik duzeltmeleri'
           git push
