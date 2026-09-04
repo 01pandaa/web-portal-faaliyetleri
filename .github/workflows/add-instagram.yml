@@ -14,21 +14,17 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
       - name: Update homepage video behavior
         shell: bash
         run: |
           python3 - <<'PY'
           from pathlib import Path
           import re
-
           path = Path('index.html')
           html = path.read_text(encoding='utf-8')
-
           old_src = 'assets/videos/web-portal-faaliyetleri-tanitim.mp4'
           new_src = 'assets/Generating_digital_map_video_seq…_202609031415.mp4'
           html = html.replace(old_src, new_src)
-
           pos = html.find(new_src)
           if pos != -1:
               start = html.rfind('<video', 0, pos)
@@ -39,7 +35,6 @@ jobs:
                       if not re.search(r'\b' + attr + r'\b', tag):
                           tag = tag[:-1] + ' ' + attr
                   html = html[:start] + tag + html[end + 1:]
-
           marker = '<!-- WPF-VIDEO-VISIBILITY -->'
           script = '''
           <!-- WPF-VIDEO-VISIBILITY -->
@@ -56,9 +51,7 @@ jobs:
                 if (entry.isIntersecting && entry.intersectionRatio >= 0.25) {
                   const promise = video.play();
                   if (promise) promise.catch(function () {});
-                } else {
-                  video.pause();
-                }
+                } else video.pause();
               });
             }, { threshold: [0, 0.25, 0.5] });
             observer.observe(video);
@@ -69,15 +62,12 @@ jobs:
           if marker not in html:
               html = html.replace('</body>', script + '\n</body>', 1)
           path.write_text(html, encoding='utf-8')
-          print('Homepage video behavior checked.')
           PY
-
       - name: Insert contextual SEO images
         shell: bash
         run: |
           python3 - <<'PY'
           from pathlib import Path
-
           mapping = {
               'seo/index.html': ('/assets/seo-dogru-yapi-guclu-gorunurluk.webp', 'SEO hizmetinde teknik altyapı ve güçlü arama görünürlüğü için doğru site yapısı'),
               'adana-seo-ajansi/index.html': ('/assets/yerel-seo-google-haritalar.webp', 'Yerel SEO ve Google Haritalar görünürlüğü için yerel arama çalışmaları'),
@@ -90,40 +80,32 @@ jobs:
               'blog/google-ads-gecersiz-tiklama-2026/index.html': ('/assets/google-ads-reklam-ziyaret-donusum.webp', 'Google Ads reklam ziyaretleri, trafik kalitesi ve dönüşüm ilişkisi'),
               'blog/google-ads-nedir/index.html': ('/assets/google-ads-dogru-hedefleme.webp', 'Google Ads kampanyalarında doğru hedefleme ve reklam trafiği'),
           }
-
-          block_template = '''\n<section class="section" aria-label="İlgili görsel">\n<div style="max-width:980px;margin:0 auto;text-align:center">\n<figure style="margin:0">\n<img src="{src}" alt="{alt}" loading="lazy" decoding="async" style="display:block;width:100%;height:auto;border-radius:22px">\n</figure>\n</div>\n</section>\n'''
-
-          changed = []
-          for path, (src, alt) in mapping.items():
-              p = Path(path)
-              if not p.exists():
-                  continue
-              text = p.read_text(encoding='utf-8')
-              if src in text:
-                  continue
-              hero_pos = text.find('<section class="hero"')
-              if hero_pos < 0:
-                  continue
-              first_section = text.find('<section class="section"', hero_pos)
-              if first_section < 0:
-                  continue
-              text = text[:first_section] + block_template.format(src=src, alt=alt) + text[first_section:]
-              p.write_text(text, encoding='utf-8')
+          block = '<section class="section" aria-label="İlgili görsel"><div style="max-width:980px;margin:0 auto;text-align:center"><figure style="margin:0"><img src="{src}" alt="{alt}" loading="lazy" decoding="async" style="display:block;width:100%;height:auto;border-radius:22px"></figure></div></section>\n'
+          changed=[]
+          for path,(src,alt) in mapping.items():
+              p=Path(path)
+              if not p.exists(): continue
+              text=p.read_text(encoding='utf-8')
+              if src in text: continue
+              anchor=text.find('<section class="hero"')
+              if anchor>=0:
+                  insert=text.find('</section>',anchor)+len('</section>')
+              else:
+                  anchor=text.find('<article class="section"')
+                  if anchor<0: continue
+                  insert=text.find('>',anchor)+1
+              if insert<=0: continue
+              text=text[:insert]+"\n"+block.format(src=src,alt=alt)+text[insert:]
+              p.write_text(text,encoding='utf-8')
               changed.append(path)
-          print('Changed files:')
-          for item in changed:
-              print(item)
+          print('\n'.join(changed))
           PY
-
       - name: Commit maintenance updates
         shell: bash
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add index.html '*.html'
-          if git diff --cached --quiet; then
-            echo 'No maintenance changes needed.'
-            exit 0
-          fi
+          if git diff --cached --quiet; then exit 0; fi
           git commit -m 'chore: apply contextual SEO images'
           git push
