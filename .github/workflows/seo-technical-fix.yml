@@ -1,7 +1,8 @@
 name: SEO Technical Metadata Fix
 
 on:
-  workflow_dispatch:
+  push:
+    branches: [main]
 
 permissions:
   contents: write
@@ -18,7 +19,6 @@ jobs:
           from pathlib import Path
           import re
 
-          # Homepage: add Open Graph image and a valid WebPage image reference.
           p = Path('index.html')
           html = p.read_text(encoding='utf-8')
           image = 'https://www.webportalfaaliyetleri.com/assets/web-portal-faaliyetleri-dijital-pazarlama.webp'
@@ -30,7 +30,6 @@ jobs:
               html = html.replace(marker, block + marker, 1)
           p.write_text(html, encoding='utf-8')
 
-          # Repair the malformed Article JSON-LD introduced by the image metadata pass.
           files = [
               'blog/google-ads-nedir/index.html',
               'blog/google-ads-anahtar-kelime-secimi-2026/index.html',
@@ -48,8 +47,6 @@ jobs:
               if not p.exists():
                   continue
               html = p.read_text(encoding='utf-8')
-              # The broken form is a missing comma before primaryImageOfPage and/or a trailing comma before }.
-              html = html.replace('"</script>', '"</script>')
               html = re.sub(r'("mainEntityOfPage"\s*:\s*(?:\{.*?\}|"[^"]+"))\s*"primaryImageOfPage"', r'\1,"primaryImageOfPage"', html, flags=re.S)
               html = re.sub(r'("primaryImageOfPage"\s*:\s*\{.*?\})\s*,\s*}', r'\1}', html, flags=re.S)
               p.write_text(html, encoding='utf-8')
