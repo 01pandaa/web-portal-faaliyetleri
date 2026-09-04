@@ -35,9 +35,7 @@ document.addEventListener('DOMContentLoaded', function () {
       if (entry.isIntersecting && entry.intersectionRatio >= 0.25) {
         const promise = video.play();
         if (promise) promise.catch(function () {});
-      } else {
-        video.pause();
-      }
+      } else video.pause();
     });
   }, { threshold: [0, 0.25, 0.5] });
   observer.observe(video);
