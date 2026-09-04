@@ -32,18 +32,15 @@ jobs:
             s=p.read_text(encoding='utf-8')
             url=base+img
             if 'property="og:image"' not in s:
-              marker='</head>'
-              tag=f'<meta property="og:image" content="{url}">'
-              s=s.replace(marker, tag+marker, 1)
+              s=s.replace('</head>',f'<meta property="og:image" content="{url}"></head>',1)
             if 'primaryImageOfPage' not in s:
-              tag=f'"primaryImageOfPage":{{"@type":"ImageObject","url":"{url}"}},'
               if '<script type="application/ld+json">' in s:
                 start=s.find('<script type="application/ld+json">')
                 end=s.find('</script>',start)
                 block=s[start:end]
                 pos=block.rfind('}')
                 if pos!=-1:
-                  block=block[:pos]+tag+block[pos:]
+                  block=block[:pos]+f'"primaryImageOfPage":{{"@type":"ImageObject","url":"{url}"}},'+block[pos:]
                   s=s[:start]+block+s[end:]
               else:
                 jsonld=f'<script type="application/ld+json">{{"@context":"https://schema.org","@type":"WebPage","url":"https://www.webportalfaaliyetleri.com/{file.rsplit("/",1)[0]}/","primaryImageOfPage":{{"@type":"ImageObject","url":"{url}"}}}}</script>'
@@ -55,3 +52,5 @@ jobs:
           git add .
           git commit -m 'chore: add preferred image metadata [skip ci]' || exit 0
           git push
+
+# trigger second run
