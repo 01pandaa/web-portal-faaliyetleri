@@ -1,0 +1,65 @@
+name: SEO Technical Metadata Fix
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fix homepage and Article JSON-LD
+        shell: python
+        run: |
+          from pathlib import Path
+          import re
+
+          # Homepage: add Open Graph image and a valid WebPage image reference.
+          p = Path('index.html')
+          html = p.read_text(encoding='utf-8')
+          image = 'https://www.webportalfaaliyetleri.com/assets/web-portal-faaliyetleri-dijital-pazarlama.webp'
+          if 'property="og:image"' not in html:
+              html = html.replace('<meta property="og:url" content="https://www.webportalfaaliyetleri.com/">', '<meta property="og:url" content="https://www.webportalfaaliyetleri.com/"><meta property="og:image" content="' + image + '">', 1)
+          if '"primaryImageOfPage"' not in html:
+              marker = '<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite"'
+              block = '<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","url":"https://www.webportalfaaliyetleri.com/","primaryImageOfPage":{"@type":"ImageObject","url":"' + image + '"}}</script>'
+              html = html.replace(marker, block + marker, 1)
+          p.write_text(html, encoding='utf-8')
+
+          # Repair the malformed Article JSON-LD introduced by the image metadata pass.
+          files = [
+              'blog/google-ads-nedir/index.html',
+              'blog/google-ads-anahtar-kelime-secimi-2026/index.html',
+              'blog/google-ads-donusum-takibi-2026/index.html',
+              'blog/google-ads-ai-max-2026/index.html',
+              'blog/google-ads-gecersiz-tiklama-2026/index.html',
+              'blog/google-ads-fiyatlari/index.html',
+              'blog/google-reklam-verme/index.html',
+              'blog/google-ads-yonetimi-2026/index.html',
+              'blog/google-ads-ajansi-2026/index.html',
+              'blog/teknik-seo-nedir/index.html',
+          ]
+          for name in files:
+              p = Path(name)
+              if not p.exists():
+                  continue
+              html = p.read_text(encoding='utf-8')
+              # The broken form is a missing comma before primaryImageOfPage and/or a trailing comma before }.
+              html = html.replace('"</script>', '"</script>')
+              html = re.sub(r'("mainEntityOfPage"\s*:\s*(?:\{.*?\}|"[^"]+"))\s*"primaryImageOfPage"', r'\1,"primaryImageOfPage"', html, flags=re.S)
+              html = re.sub(r'("primaryImageOfPage"\s*:\s*\{.*?\})\s*,\s*}', r'\1}', html, flags=re.S)
+              p.write_text(html, encoding='utf-8')
+
+      - name: Commit changes
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html blog/*/index.html
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "SEO teknik metadata ve JSON-LD düzeltmeleri"
+          git push
