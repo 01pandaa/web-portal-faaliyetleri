@@ -9,17 +9,15 @@ permissions:
 
 jobs:
   apply-images:
-    if: ${{ !contains(github.event.head_commit.message, 'chore: add contextual SEO images') }}
+    if: "github.event.head_commit.message != 'chore: apply contextual SEO images'"
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
       - name: Insert contextual images
         shell: python
         run: |
           from pathlib import Path
-
           mapping = {
               "seo/index.html": ("/assets/seo-dogru-yapi-guclu-gorunurluk.webp", "SEO hizmetinde teknik altyapı ve güçlü arama görünürlüğü için doğru site yapısı"),
               "adana-seo-ajansi/index.html": ("/assets/yerel-seo-google-haritalar.webp", "Yerel SEO ve Google Haritalar görünürlüğü için yerel arama çalışmaları"),
@@ -32,9 +30,7 @@ jobs:
               "blog/google-ads-gecersiz-tiklama-2026/index.html": ("/assets/google-ads-reklam-ziyaret-donusum.webp", "Google Ads reklam ziyaretleri, trafik kalitesi ve dönüşüm ilişkisi"),
               "blog/google-ads-nedir/index.html": ("/assets/google-ads-dogru-hedefleme.webp", "Google Ads kampanyalarında doğru hedefleme ve reklam trafiği"),
           }
-
           block_template = '''\n<section class="section" aria-label="İlgili görsel">\n<div style="max-width:980px;margin:0 auto;text-align:center">\n<figure style="margin:0">\n<img src="{src}" alt="{alt}" loading="lazy" decoding="async" style="display:block;width:100%;height:auto;border-radius:22px">\n</figure>\n</div>\n</section>\n'''
-
           changed = []
           for path, (src, alt) in mapping.items():
               p = Path(path)
@@ -49,11 +45,9 @@ jobs:
               first_section = text.find('<section class="section"', hero_pos)
               if first_section < 0:
                   continue
-              block = block_template.format(src=src, alt=alt)
-              text = text[:first_section] + block + text[first_section:]
+              text = text[:first_section] + block_template.format(src=src, alt=alt) + text[first_section:]
               p.write_text(text, encoding="utf-8")
               changed.append(path)
-
           print("Changed files:")
           for item in changed:
               print(item)
@@ -62,9 +56,6 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add '*.html'
-          if git diff --cached --quiet; then
-            echo "No image changes needed"
-            exit 0
-          fi
-          git commit -m "chore: add contextual SEO images"
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "chore: apply contextual SEO images"
           git push
