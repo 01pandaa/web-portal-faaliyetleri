@@ -26,18 +26,23 @@
 document.addEventListener('DOMContentLoaded', function () {
   const video = document.querySelector('#brand-video-title')?.closest('section')?.querySelector('video');
   if (!video || !('IntersectionObserver' in window)) return;
+
   video.muted = true;
   video.setAttribute('muted', '');
   video.setAttribute('playsinline', '');
   video.setAttribute('autoplay', '');
+
   const observer = new IntersectionObserver(function (entries) {
     entries.forEach(function (entry) {
       if (entry.isIntersecting && entry.intersectionRatio >= 0.25) {
         const promise = video.play();
         if (promise) promise.catch(function () {});
-      } else video.pause();
+      } else {
+        video.pause();
+      }
     });
   }, { threshold: [0, 0.25, 0.5] });
+
   observer.observe(video);
 });
 </script>
