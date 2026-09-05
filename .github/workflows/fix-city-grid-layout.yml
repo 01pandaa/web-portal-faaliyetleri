@@ -1,0 +1,99 @@
+name: Fix city grid layout
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Rebuild city cards as five-column row
+        shell: python
+        run: |
+          from pathlib import Path
+          import re
+
+          p = Path('index.html')
+          html = p.read_text(encoding='utf-8')
+
+          def matching_div_end(text, start):
+              token = re.compile(r'<div\b[^>]*>|</div>', re.I)
+              depth = 0
+              for m in token.finditer(text, start):
+                  if m.group(0).lower().startswith('<div'):
+                      depth += 1
+                  else:
+                      depth -= 1
+                      if depth == 0:
+                          return m.end()
+              raise SystemExit('div kapanışı bulunamadı')
+
+          grid_start = html.find('<div class="city-grid">')
+          if grid_start == -1:
+              raise SystemExit('city-grid bulunamadı')
+          grid_end = matching_div_end(html, grid_start)
+          grid = html[grid_start:grid_end]
+
+          # Extract only direct city-card blocks from the grid.
+          cards = []
+          pos = grid_start + len('<div class="city-grid">')
+          while True:
+              m = re.search(r'<div class="city-card(?:\s+featured)?"[^>]*>', html[pos:grid_end], re.I)
+              if not m:
+                  break
+              start = pos + m.start()
+              end = matching_div_end(html, start)
+              if end > grid_end:
+                  raise SystemExit('city card grid dışına taştı')
+              cards.append(html[start:end])
+              pos = end
+
+          # Remove any accidentally nested/duplicated Bursa card from all extracted cards.
+          def has_city(card, city):
+              return re.search(r'<h3>\s*' + re.escape(city) + r'\s*</h3>', card, re.I) is not None
+
+          clean_cards = [c for c in cards if not has_city(c, 'Bursa')]
+          if not clean_cards:
+              raise SystemExit('şehir kartları çıkarılamadı')
+
+          bursa = '''<div class="city-card featured" id="WPF-BURSA-CITY-CARD"><div class="city-label">AKTİF BÖLGE</div><h3>Bursa</h3><p>Bursa'da Google Ads ve SEO çalışmalarını şehir geneline sınırlamıyor; Nilüfer, Osmangazi, Yıldırım, Mudanya, Gürsu, Kestel ve İnegöl gibi önemli bölgelerde farklı arama niyetlerini ayrıca ele alıyoruz.</p><a href="/bursa-google-ads/">Bursa Google Ads Ajansı →</a><a href="/bursa-seo-ajansi/">Bursa SEO Ajansı →</a></div>'''
+
+          # Insert Bursa immediately after Mersin; if Mersin is absent, put Bursa at the end.
+          inserted = False
+          rebuilt = []
+          for card in clean_cards:
+              rebuilt.append(card)
+              if has_city(card, 'Mersin'):
+                  rebuilt.append(bursa)
+                  inserted = True
+          if not inserted:
+              rebuilt.append(bursa)
+
+          new_grid = '<div class="city-grid">' + ''.join(rebuilt) + '</div>'
+          html = html[:grid_start] + new_grid + html[grid_end:]
+
+          # Five cards need five columns on desktop; preserve responsive two/one-column behavior.
+          style = '<style id="WPF-CITY-GRID-FIX">.city-grid{grid-template-columns:repeat(5,minmax(0,1fr))}.city-card h3,.city-card.featured h3{color:#158d7d !important}@media(max-width:1200px){.city-grid{grid-template-columns:repeat(3,1fr)}}@media(max-width:1000px){.city-grid{grid-template-columns:1fr 1fr}}@media(max-width:600px){.city-grid{grid-template-columns:1fr}}</style>'
+          if 'id="WPF-CITY-GRID-FIX"' in html:
+              html = re.sub(r'<style id="WPF-CITY-GRID-FIX">.*?</style>', style, html, count=1, flags=re.S)
+          else:
+              html = html.replace('</head>', style + '</head>', 1)
+
+          p.write_text(html, encoding='utf-8')
+
+      - name: Commit and remove one-time workflow
+        shell: bash
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git commit -m 'fix: rebuild homepage city cards layout' || true
+          rm -f .github/workflows/fix-city-grid-layout.yml
+          git add .github/workflows/fix-city-grid-layout.yml
+          git commit -m 'chore: remove one-time city grid workflow' || true
+          git push
