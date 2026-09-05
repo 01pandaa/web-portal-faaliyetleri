@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
   <url><loc>https://www.webportalfaaliyetleri.com/</loc></url>
   <url><loc>https://www.webportalfaaliyetleri.com/hizmetler/</loc></url>
   <url><loc>https://www.webportalfaaliyetleri.com/google-ads/</loc></url>
@@ -52,4 +52,5 @@
   <url><loc>https://www.webportalfaaliyetleri.com/blog/bursa-google-ads-reklam-sorunlari-2026/</loc></url>
   <url><loc>https://www.webportalfaaliyetleri.com/kayseri-google-ads/</loc></url>
   <url><loc>https://www.webportalfaaliyetleri.com/kayseri-seo-ajansi/</loc></url>
+  <url><loc>https://www.webportalfaaliyetleri.com/video/web-portal-faaliyetleri-tanitim/</loc><video:video><video:thumbnail_loc>https://www.webportalfaaliyetleri.com/assets/web-portal-faaliyetleri-dijital-pazarlama.webp</video:thumbnail_loc><video:title>Web Portal Faaliyetleri Tanıtım Videosu</video:title><video:description>Google Ads, SEO, web tasarım, dijital reklam ve reklam güvenliği çözümlerini tanıtan Web Portal Faaliyetleri marka videosu.</video:description><video:content_loc>https://www.webportalfaaliyetleri.com/assets/Generating_digital_map_video_seq…_202609031415.mp4</video:content_loc></video:video></url>
 </urlset>
