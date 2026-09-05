@@ -16,10 +16,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Add tracker and city carousel
+      - name: Add tracker, city carousel and video SEO
         shell: python
         run: |
           from pathlib import Path
+          import re
 
           tracker = '<script src="https://01pandaa.github.io/bot-tiklama-engelleme/tracker/tracker.js" defer></script>'
           css = '''<style id="WPF-CITY-CAROUSEL">.city-carousel{position:relative;width:100%;margin-top:4px}.city-carousel .city-grid{display:flex;grid-template-columns:none;gap:16px;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scroll-behavior:smooth;overscroll-behavior-x:contain;scrollbar-width:none;-ms-overflow-style:none;padding:6px 46px 12px;cursor:grab;user-select:none}.city-carousel .city-grid::-webkit-scrollbar{display:none}.city-carousel .city-grid.is-dragging{cursor:grabbing;scroll-behavior:auto;scroll-snap-type:none}.city-carousel .city-card{flex:0 0 calc((100% - 48px)/4);min-width:0;scroll-snap-align:start}.city-carousel .city-card a{user-select:auto}.city-carousel-btn{position:absolute;top:50%;transform:translateY(-50%);z-index:5;width:38px;height:38px;border:1px solid #b9ddd6;border-radius:50%;background:#fff;color:#158d7d;box-shadow:0 8px 22px #00000018;font-size:24px;line-height:1;display:grid;place-items:center;cursor:pointer}.city-carousel-btn:hover{background:#e7f6f3}.city-carousel-btn.prev{left:0}.city-carousel-btn.next{right:0}.city-carousel-btn:disabled{opacity:.35;cursor:default}.city-carousel .city-card h3,.city-carousel .city-card.featured h3{color:#158d7d !important}@media(max-width:1000px){.city-carousel .city-card{flex-basis:calc((100% - 32px)/3)}}@media(max-width:700px){.city-carousel .city-grid{padding-left:40px;padding-right:40px}.city-carousel .city-card{flex-basis:calc((100% - 16px)/2)}}@media(max-width:520px){.city-carousel .city-card{flex-basis:82vw}.city-carousel-btn{width:34px;height:34px;font-size:20px}}</style>'''
@@ -39,6 +40,25 @@ jobs:
               if path.name == 'index.html' and 'dataset.carouselReady' not in text and '</body>' in text:
                   text = text.replace('</body>', js + '</body>', 1)
                   changed = True
+
+              if path.as_posix() == 'index.html':
+                  match = re.search(r'<source\s+src=["\']([^"\']+\.mp4)["\']', text, re.I)
+                  if match:
+                      src = match.group(1)
+                      pattern = r'<video.*?<source\s+src=["\']' + re.escape(src) + r'["\'][^>]*>.*?</video[^>]*>'
+                      clean = '<video controls preload="metadata" playsinline style="display:block;width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:16px;background:#05080b">\n      <source src="' + src + '" type="video/mp4">\n      Tarayıcınız video oynatmayı desteklemiyor.\n    </video>'
+                      fixed, count = re.subn(pattern, clean, text, count=1, flags=re.I | re.S)
+                      if count:
+                          text = fixed
+                          changed = True
+                      thumbnail = 'https://www.webportalfaaliyetleri.com/assets/web-portal-faaliyetleri-dijital-pazarlama.webp'
+                      watch_url = 'https://www.webportalfaaliyetleri.com/video/web-portal-faaliyetleri-tanitim/'
+                      content_url = src if src.startswith('http') else 'https://www.webportalfaaliyetleri.com/' + src.lstrip('./')
+                      schema = '<script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoObject","name":"Web Portal Faaliyetleri Tanıtım Videosu","description":"Web Portal Faaliyetleri; Google Ads, SEO, web tasarım, dijital reklam ve reklam güvenliği çözümlerini tanıtan marka videosu.","thumbnailUrl":["' + thumbnail + '"],"uploadDate":"2026-09-03T12:30:35+00:00","contentUrl":"' + content_url + '","url":"' + watch_url + '"}</script>'
+                      if '"@type":"VideoObject"' not in text:
+                          text = text.replace('</head>', schema + '</head>', 1)
+                          changed = True
+
               if changed:
                   path.write_text(text, encoding='utf-8')
 
@@ -49,7 +69,7 @@ jobs:
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add '*.html' '**/*.html'
           if git diff --cached --quiet; then
-            echo 'Tracker and city carousel already installed.'
+            echo 'Tracker, city carousel and video SEO already installed.'
             exit 0
           fi
           git commit -m 'Install bot click tracker and city carousel [tracker-installed]'
