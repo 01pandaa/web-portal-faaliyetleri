@@ -43,4 +43,11 @@ jobs:
             exit 0
           fi
           git commit -m "fix: repair malformed Adana SEO JSON-LD"
-          git push
+          for i in 1 2 3 4 5; do
+            git fetch origin main
+            git rebase origin/main && git push && exit 0
+            git rebase --abort || true
+            sleep 2
+          done
+          echo "Could not push after retries."
+          exit 1
