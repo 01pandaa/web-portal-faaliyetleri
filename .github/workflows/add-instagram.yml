@@ -21,8 +21,6 @@ jobs:
           python3 - <<'PY'
           from pathlib import Path
           import re
-
-          # Homepage image metadata.
           path = Path('index.html')
           html = path.read_text(encoding='utf-8')
           image = 'https://www.webportalfaaliyetleri.com/assets/web-portal-faaliyetleri-dijital-pazarlama.webp'
@@ -33,8 +31,6 @@ jobs:
               block = '<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","url":"https://www.webportalfaaliyetleri.com/","primaryImageOfPage":{"@type":"ImageObject","url":"' + image + '"}}</script>'
               html = html.replace(marker, block + marker, 1)
           path.write_text(html, encoding='utf-8')
-
-          # Repair malformed Article JSON-LD created by the earlier metadata pass.
           files = list(Path('blog').glob('*/index.html'))
           for path in files:
               html = path.read_text(encoding='utf-8')
@@ -51,14 +47,11 @@ jobs:
           python3 - <<'PY'
           from pathlib import Path
           import re
-
           path = Path('index.html')
           html = path.read_text(encoding='utf-8')
-
           old_src = 'assets/videos/web-portal-faaliyetleri-tanitim.mp4'
           new_src = 'assets/Generating_digital_map_video_seq…_202609031415.mp4'
           html = html.replace(old_src, new_src)
-
           pos = html.find(new_src)
           if pos != -1:
               start = html.rfind('<video', 0, pos)
@@ -69,7 +62,6 @@ jobs:
                       if not re.search(r'\b' + attr + r'\b', tag):
                           tag = tag[:-1] + ' ' + attr
                   html = html[:start] + tag + html[end + 1:]
-
           marker = '<!-- WPF-VIDEO-VISIBILITY -->'
           script = '''
           <!-- WPF-VIDEO-VISIBILITY -->
@@ -77,12 +69,10 @@ jobs:
           document.addEventListener('DOMContentLoaded', function () {
             const video = document.querySelector('#brand-video-title')?.closest('section')?.querySelector('video');
             if (!video || !('IntersectionObserver' in window)) return;
-
             video.muted = true;
             video.setAttribute('muted', '');
             video.setAttribute('playsinline', '');
             video.setAttribute('autoplay', '');
-
             const observer = new IntersectionObserver(function (entries) {
               entries.forEach(function (entry) {
                 if (entry.isIntersecting && entry.intersectionRatio >= 0.25) {
@@ -93,18 +83,58 @@ jobs:
                 }
               });
             }, { threshold: [0, 0.25, 0.5] });
-
             observer.observe(video);
           });
           </script>
           '''
-
           html = re.sub(r'\s*<!-- WPF-VIDEO-VISIBILITY -->\s*<script>.*?</script>\s*', '\n', html, flags=re.S)
           if marker not in html:
               html = html.replace('</body>', script + '\n</body>', 1)
-
           path.write_text(html, encoding='utf-8')
-          print('Homepage video now plays when visible and pauses when scrolled away.')
+          PY
+
+      - name: Add video SEO markup and watch page
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          root = Path('.')
+          index = root / 'index.html'
+          sitemap = root / 'sitemap.xml'
+          page = root / 'video' / 'web-portal-faaliyetleri-tanitim' / 'index.html'
+          html = index.read_text(encoding='utf-8')
+          sm = re.search(r'<source\s+src=["\']([^"\']+\.mp4)["\']', html, re.I)
+          if not sm:
+              raise SystemExit('Video source not found')
+          src = sm.group(1)
+          content_url = src if src.startswith('http') else 'https://www.webportalfaaliyetleri.com/' + src.lstrip('./')
+          thumbnail = 'https://www.webportalfaaliyetleri.com/assets/web-portal-faaliyetleri-dijital-pazarlama.webp'
+          watch_url = 'https://www.webportalfaaliyetleri.com/video/web-portal-faaliyetleri-tanitim/'
+          # Repair the malformed native video markup currently present on the homepage.
+          pattern = r'<video.*?<source\s+src=["\']' + re.escape(src) + r'["\'][^>]*>.*?</video[^>]*>'
+          clean = f'''<video controls preload="metadata" playsinline style="display:block;width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:16px;background:#05080b">\n      <source src="{src}" type="video/mp4">\n      Tarayıcınız video oynatmayı desteklemiyor.\n    </video>'''
+          html, count = re.subn(pattern, clean, html, count=1, flags=re.I | re.S)
+          if count == 0:
+              print('Video block pattern was not replaced; schema/page will still be added.')
+          schema = f'''<script type="application/ld+json">{{"@context":"https://schema.org","@type":"VideoObject","name":"Web Portal Faaliyetleri Tanıtım Videosu","description":"Web Portal Faaliyetleri; Google Ads, SEO, web tasarım, dijital reklam ve reklam güvenliği çözümlerini tanıtan marka videosu.","thumbnailUrl":["{thumbnail}"],"uploadDate":"2026-09-03T12:30:35+00:00","contentUrl":"{content_url}","url":"{watch_url}"}}</script>'''
+          if '"@type":"VideoObject"' not in html:
+              html = html.replace('</head>', schema + '</head>', 1)
+          link = '<p style="margin-top:16px"><a href="/video/web-portal-faaliyetleri-tanitim/" style="color:#8bd3c7;font-weight:800">Videoyu ayrı sayfada inceleyin →</a></p>'
+          if '/video/web-portal-faaliyetleri-tanitim/' not in html:
+              html = html.replace('</video>', '</video>' + link, 1)
+          index.write_text(html, encoding='utf-8')
+          page.parent.mkdir(parents=True, exist_ok=True)
+          page_html = f'''<!doctype html>
+<html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Web Portal Faaliyetleri Tanıtım Videosu | Google Ads ve SEO</title><meta name="description" content="Web Portal Faaliyetleri'nin Google Ads, SEO, web tasarım, dijital reklam ve reklam güvenliği hizmetlerini anlatan tanıtım videosu."><link rel="canonical" href="{watch_url}"><meta property="og:type" content="video.other"><meta property="og:title" content="Web Portal Faaliyetleri Tanıtım Videosu"><meta property="og:description" content="Google Ads, SEO, web tasarım, dijital reklam ve reklam güvenliği çözümlerimizi tanıyın."><meta property="og:url" content="{watch_url}"><meta property="og:image" content="{thumbnail}"><style>body{{margin:0;background:#0b0f14;color:#fff;font-family:Arial,sans-serif}}main{{max-width:1000px;margin:0 auto;padding:70px 24px}}a{{color:#8bd3c7}}.eyebrow{{font-size:11px;letter-spacing:2px;font-weight:800;color:#8bd3c7}}h1{{font-size:clamp(38px,6vw,68px);line-height:1.02;margin:12px 0 18px}}p{{color:#b7c1c7;font-size:17px;line-height:1.7}}.video{{margin-top:35px;background:#11191f;padding:16px;border:1px solid #27333b;border-radius:20px}}video{{display:block;width:100%;aspect-ratio:16/9;border-radius:14px;background:#05080b}}</style><script type="application/ld+json">{{"@context":"https://schema.org","@type":"VideoObject","name":"Web Portal Faaliyetleri Tanıtım Videosu","description":"Web Portal Faaliyetleri; Google Ads, SEO, web tasarım, dijital reklam ve reklam güvenliği çözümlerini tanıtan marka videosu.","thumbnailUrl":["{thumbnail}"],"uploadDate":"2026-09-03T12:30:35+00:00","contentUrl":"{content_url}","url":"{watch_url}"}}</script></head><body><main><a href="/">← Web Portal Faaliyetleri</a><div style="margin-top:55px"><div class="eyebrow">MARKA TANITIMI</div><h1>Web Portal Faaliyetleri'ni tanıyın.</h1><p>Google Ads, SEO, web tasarım, dijital reklam ve reklam güvenliği çözümlerimizi kısa tanıtım videomuzda keşfedin.</p></div><div class="video"><video controls preload="metadata" playsinline><source src="{src}" type="video/mp4">Tarayıcınız video oynatmayı desteklemiyor.</video></div></main></body></html>'''
+          page.write_text(page_html, encoding='utf-8')
+          smap = sitemap.read_text(encoding='utf-8')
+          if 'xmlns:video=' not in smap:
+              smap = smap.replace('xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"', 'xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1"')
+          entry = f'''  <url><loc>{watch_url}</loc><video:video><video:thumbnail_loc>{thumbnail}</video:thumbnail_loc><video:title>Web Portal Faaliyetleri Tanıtım Videosu</video:title><video:description>Google Ads, SEO, web tasarım, dijital reklam ve reklam güvenliği çözümlerini tanıtan Web Portal Faaliyetleri marka videosu.</video:description><video:content_loc>{content_url}</video:content_loc></video:video></url>\n'''
+          if watch_url not in smap:
+              smap = smap.replace('</urlset>', entry + '</urlset>')
+          sitemap.write_text(smap, encoding='utf-8')
           PY
 
       - name: Commit maintenance updates
@@ -112,10 +142,10 @@ jobs:
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add index.html blog/*/index.html
+          git add index.html blog/*/index.html sitemap.xml video/web-portal-faaliyetleri-tanitim/index.html
           if git diff --cached --quiet; then
             echo 'No maintenance changes needed.'
             exit 0
           fi
-          git commit -m 'SEO metadata ve JSON-LD teknik duzeltmeleri'
+          git commit -m 'SEO metadata ve video indexing teknik duzeltmeleri'
           git push
