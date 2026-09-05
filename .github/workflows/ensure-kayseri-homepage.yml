@@ -1,0 +1,81 @@
+name: Ensure Kayseri homepage card
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  add-card:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Add Kayseri card and sitemap entries
+        shell: python
+        run: |
+          from pathlib import Path
+          import re
+
+          index = Path('index.html')
+          html = index.read_text(encoding='utf-8')
+          marker = 'WPF-KAYSERI-CITY-CARD'
+
+          if marker not in html:
+              start = html.find('<div class="city-grid">')
+              if start == -1:
+                  raise SystemExit('city-grid bulunamadı')
+
+              pos = start
+              depth = 0
+              end = -1
+              token_re = re.compile(r'<div\\b[^>]*>|</div>')
+              for match in token_re.finditer(html, start):
+                  token = match.group(0)
+                  if token.startswith('<div'):
+                      depth += 1
+                  else:
+                      depth -= 1
+                      if depth == 0:
+                          end = match.start()
+                          break
+              if end == -1:
+                  raise SystemExit('city-grid kapanışı bulunamadı')
+
+              card = '<div class="city-card featured" id="WPF-KAYSERI-CITY-CARD"><div class="city-label">AKTİF BÖLGE</div><h3>Kayseri</h3><p>Kayseri’de Google Ads ve SEO çalışmalarını şehir geneline sınırlamıyor; Melikgazi, Kocasinan, Talas, İncesu, Develi, Hacılar ve diğer önemli bölgelerde farklı arama niyetlerini ele alıyoruz.</p><a href="/kayseri-google-ads/">Kayseri Google Ads Ajansı</a><a href="/kayseri-seo-ajansi/">Kayseri SEO Ajansı</a></div>'
+              html = html[:end] + card + html[end:]
+              index.write_text(html, encoding='utf-8')
+
+          sitemap = Path('sitemap.xml')
+          sm = sitemap.read_text(encoding='utf-8')
+          for url in [
+              'https://www.webportalfaaliyetleri.com/kayseri-google-ads/',
+              'https://www.webportalfaaliyetleri.com/kayseri-seo-ajansi/'
+          ]:
+              entry = f'  <url><loc>{url}</loc></url>'
+              if entry not in sm:
+                  sm = sm.replace('</urlset>', entry + '\\n</urlset>')
+          sitemap.write_text(sm, encoding='utf-8')
+
+      - name: Verify
+        shell: bash
+        run: |
+          test -f kayseri-seo-ajansi/index.html
+          test -f kayseri-google-ads/index.html
+          grep -q 'WPF-KAYSERI-CITY-CARD' index.html
+          grep -q 'kayseri-google-ads' sitemap.xml
+          grep -q 'kayseri-seo-ajansi' sitemap.xml
+
+      - name: Commit and remove workflow
+        shell: bash
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html sitemap.xml
+          git commit -m 'feat: add Kayseri card to homepage' || true
+          rm -f .github/workflows/ensure-kayseri-homepage.yml
+          git add .github/workflows/ensure-kayseri-homepage.yml
+          git commit -m 'chore: remove one-time Kayseri homepage workflow' || true
+          git push
