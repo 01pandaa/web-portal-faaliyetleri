@@ -1,0 +1,93 @@
+name: Fix Bursa city card
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fix city grid
+        shell: python
+        run: |
+          from pathlib import Path
+          import re
+
+          p = Path('index.html')
+          html = p.read_text(encoding='utf-8')
+
+          def matching_div_end(text, start):
+              token = re.compile(r'<div\b[^>]*>|</div>', re.I)
+              depth = 0
+              for m in token.finditer(text, start):
+                  if m.group(0).lower().startswith('<div'):
+                      depth += 1
+                  else:
+                      depth -= 1
+                      if depth == 0:
+                          return m.end()
+              return -1
+
+          grid_start = html.find('<div class="city-grid">')
+          if grid_start == -1:
+              raise SystemExit('city-grid bulunamadı; değişiklik yapılmadı.')
+          grid_end = matching_div_end(html, grid_start)
+          if grid_end == -1:
+              raise SystemExit('city-grid kapanışı bulunamadı; değişiklik yapılmadı.')
+
+          # Önce varsa eski Bursa kartını güvenli biçimde kaldır.
+          bursa_start = html.find('id="WPF-BURSA-CITY-CARD"', grid_start, grid_end)
+          if bursa_start != -1:
+              card_start = html.rfind('<div', grid_start, bursa_start)
+              card_end = matching_div_end(html, card_start)
+              if card_start != -1 and card_end != -1:
+                  html = html[:card_start] + html[card_end:]
+                  grid_start = html.find('<div class="city-grid">')
+                  grid_end = matching_div_end(html, grid_start)
+
+          bursa_card = '<div class="city-card featured" id="WPF-BURSA-CITY-CARD"><div class="city-label">AKTİF BÖLGE</div><h3>Bursa</h3><p>Bursa\'da Google Ads ve SEO çalışmalarını şehir geneline sınırlamıyor; Nilüfer, Osmangazi, Yıldırım, Mudanya, Gürsu, Kestel ve İnegöl gibi önemli bölgelerde farklı arama niyetlerini ayrıca ele alıyoruz.</p><a href="/bursa-google-ads/">Bursa Google Ads Ajansı →</a><a href="/bursa-seo-ajansi/">Bursa SEO Ajansı →</a></div>'
+
+          # Mersin kartını bul ve Bursa'yı onun hemen arkasına yerleştir.
+          pos = grid_start
+          inserted = False
+          while pos < grid_end:
+              child = html.find('<div class="city-card', pos, grid_end)
+              if child == -1:
+                  break
+              end = matching_div_end(html, child)
+              if end == -1 or end > grid_end:
+                  break
+              if 'Mersin' in html[child:end]:
+                  html = html[:end] + bursa_card + html[end:]
+                  inserted = True
+                  break
+              pos = end
+
+          if not inserted:
+              html = html[:grid_end-len('</div>')] + bursa_card + html[grid_end-len('</div>'):]
+
+          # Tüm şehir başlıklarını okunur yeşil yap.
+          if 'id="WPF-CITY-TITLE-FIX"' not in html:
+              style = '<style id="WPF-CITY-TITLE-FIX">.city-card h3,.city-card.featured h3{color:#158d7d !important}</style>'
+              html = html.replace('</head>', style + '</head>', 1)
+
+          p.write_text(html, encoding='utf-8')
+
+      - name: Remove one-time workflows
+        shell: bash
+        run: |
+          rm -f .github/workflows/bursa-homepage-update.yml .github/workflows/fix-bursa-city-card.yml
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html .github/workflows/bursa-homepage-update.yml .github/workflows/fix-bursa-city-card.yml
+          if git diff --cached --quiet; then
+            echo 'No changes needed.'
+            exit 0
+          fi
+          git commit -m 'fix: place Bursa card correctly in city grid'
+          git push
