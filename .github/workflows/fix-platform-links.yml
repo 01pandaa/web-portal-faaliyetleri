@@ -4,6 +4,8 @@ on:
     paths:
       - 'index.html'
       - '.github/workflows/fix-platform-links.yml'
+permissions:
+  contents: write
 jobs:
   fix:
     runs-on: ubuntu-latest
