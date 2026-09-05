@@ -42,22 +42,32 @@ jobs:
                   changed = True
 
               if path.as_posix() == 'index.html':
-                  match = re.search(r'<source\s+src=["\']([^"\']+\.mp4)["\']', text, re.I)
-                  if match:
-                      src = match.group(1)
-                      pattern = r'<video.*?<source\s+src=["\']' + re.escape(src) + r'["\'][^>]*>.*?</video[^>]*>'
-                      clean = '<video controls preload="metadata" playsinline style="display:block;width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:16px;background:#05080b">\n      <source src="' + src + '" type="video/mp4">\n      Tarayıcınız video oynatmayı desteklemiyor.\n    </video>'
-                      fixed, count = re.subn(pattern, clean, text, count=1, flags=re.I | re.S)
-                      if count:
-                          text = fixed
+                  # Repair the malformed native video tag deterministically.
+                  replacements = {
+                      'autopla muted\n      <source': 'autoplay muted>\n      <source',
+                      'type="video/mp4" autopla mute playsinline\n': 'type="video/mp4">\n',
+                      '</video autoplay>': '</video>'
+                  }
+                  for old, new in replacements.items():
+                      if old in text:
+                          text = text.replace(old, new)
                           changed = True
-                      thumbnail = 'https://www.webportalfaaliyetleri.com/assets/web-portal-faaliyetleri-dijital-pazarlama.webp'
-                      watch_url = 'https://www.webportalfaaliyetleri.com/video/web-portal-faaliyetleri-tanitim/'
-                      content_url = src if src.startswith('http') else 'https://www.webportalfaaliyetleri.com/' + src.lstrip('./')
-                      schema = '<script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoObject","name":"Web Portal Faaliyetleri Tanıtım Videosu","description":"Web Portal Faaliyetleri; Google Ads, SEO, web tasarım, dijital reklam ve reklam güvenliği çözümlerini tanıtan marka videosu.","thumbnailUrl":["' + thumbnail + '"],"uploadDate":"2026-09-03T12:30:35+00:00","contentUrl":"' + content_url + '","url":"' + watch_url + '"}</script>'
-                      if '"@type":"VideoObject"' not in text:
-                          text = text.replace('</head>', schema + '</head>', 1)
-                          changed = True
+                  text = text.replace('<source src="assets/Generating_digital_map_video_seq…_202609031415.mp4" type="video/mp4">', '<source src="/assets/Generating_digital_map_video_seq…_202609031415.mp4" type="video/mp4">')
+                  text = text.replace('playsinline style="display:block;width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:16px;background:#05080b" autoplay muted>', 'playsinline poster="/assets/web-portal-faaliyetleri-dijital-pazarlama.webp" style="display:block;width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:16px;background:#05080b" autoplay muted>')
+                  thumbnail = 'https://www.webportalfaaliyetleri.com/assets/web-portal-faaliyetleri-dijital-pazarlama.webp'
+                  watch_url = 'https://www.webportalfaaliyetleri.com/video/web-portal-faaliyetleri-tanitim/'
+                  content_url = 'https://www.webportalfaaliyetleri.com/assets/Generating_digital_map_video_seq…_202609031415.mp4'
+                  schema = '<script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoObject","name":"Web Portal Faaliyetleri Tanıtım Videosu","description":"Web Portal Faaliyetleri; Google Ads, SEO, web tasarım, dijital reklam ve reklam güvenliği çözümlerini tanıtan marka videosu.","thumbnailUrl":["' + thumbnail + '"],"uploadDate":"2026-09-03T12:30:35+00:00","contentUrl":"' + content_url + '","url":"' + watch_url + '"}</script>'
+                  if '"@type":"VideoObject"' not in text:
+                      text = text.replace('</head>', schema + '</head>', 1)
+                      changed = True
+
+              if path.as_posix() == 'video/web-portal-faaliyetleri-tanitim/index.html':
+                  new_text = text.replace('src="assets/Generating_digital_map_video_seq…_202609031415.mp4"', 'src="/assets/Generating_digital_map_video_seq…_202609031415.mp4"')
+                  new_text = new_text.replace('<video controls preload="metadata" playsinline>', '<video controls preload="metadata" playsinline poster="/assets/web-portal-faaliyetleri-dijital-pazarlama.webp">')
+                  if new_text != text:
+                      text = new_text
+                      changed = True
 
               if changed:
                   path.write_text(text, encoding='utf-8')
