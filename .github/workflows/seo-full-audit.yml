@@ -1,0 +1,101 @@
+name: Full Technical SEO Audit
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    if: ${{ !contains(github.event.head_commit.message, '[seo-audit]') }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Audit all HTML pages
+        shell: python
+        run: |
+          from pathlib import Path
+          import json, re
+          from html.parser import HTMLParser
+          from urllib.parse import urlparse
+
+          class PageParser(HTMLParser):
+              def __init__(self):
+                  super().__init__()
+                  self.title=[]; self.desc=[]; self.canonical=[]; self.h1=0; self.images=[]; self.noindex=False
+              def handle_starttag(self, tag, attrs):
+                  a=dict(attrs)
+                  if tag=='title': self._in_title=True
+                  if tag=='h1': self.h1+=1
+                  if tag=='img': self.images.append(a.get('alt'))
+                  if tag=='meta':
+                      if a.get('name','').lower()=='description': self.desc.append(a.get('content',''))
+                      if a.get('name','').lower()=='robots' and 'noindex' in a.get('content','').lower(): self.noindex=True
+                  if tag=='link' and a.get('rel','').lower()=='canonical': self.canonical.append(a.get('href',''))
+              def handle_endtag(self, tag):
+                  if tag=='title': self._in_title=False
+              def handle_data(self, data):
+                  if getattr(self,'_in_title',False): self.title.append(data)
+
+          pages=sorted(Path('.').rglob('*.html'))
+          rows=[]; json_errors=[]; duplicate_canon={}
+          for p in pages:
+              text=p.read_text(encoding='utf-8',errors='replace')
+              parser=PageParser(); parser._in_title=False
+              try: parser.feed(text)
+              except Exception as e: rows.append((str(p),'HTML parse warning',str(e)))
+              title=' '.join(parser.title).strip()
+              desc=parser.desc[0].strip() if parser.desc else ''
+              canon=parser.canonical[0].strip() if parser.canonical else ''
+              duplicate_canon.setdefault(canon,[]).append(str(p)) if canon else None
+              for block in re.findall(r'<script[^>]+type=["\']application/ld\+json["\'][^>]*>(.*?)</script>',text,re.I|re.S):
+                  try: json.loads(block.strip())
+                  except Exception as e: json_errors.append(f'{p}: {e}')
+              missing_alt=sum(1 for x in parser.images if x is None)
+              rows.append((str(p),title, len(desc), canon, parser.h1, len(parser.images), missing_alt, parser.noindex))
+
+          missing=[]
+          for r in rows:
+              if len(r)<8: continue
+              p,title,dl,canon,h1,img,missing_alt,noindex=r
+              if not title or not canon or h1!=1 or not dl or missing_alt:
+                  missing.append((p,title,dl,canon,h1,img,missing_alt,noindex))
+
+          lines=['# Teknik SEO Denetimi','',f'HTML sayfası: **{len(pages)}**','']
+          lines += ['## Özet',f'- JSON-LD parse hatası: **{len(json_errors)}**',f'- Eksik/şüpheli temel metadata sayfası: **{len(missing)}**',f'- Canonical kullanılan sayfa: **{sum(1 for x in rows if len(x)>=8 and x[3])}**','']
+          lines += ['## JSON-LD Hataları']
+          lines += [f'- {x}' for x in json_errors] or ['- Yok']
+          lines += ['', '## Eksik veya kontrol edilmesi gereken sayfalar']
+          if missing:
+              lines.append('| Sayfa | Title | Desc karakter | Canonical | H1 | IMG | Alt eksik | Noindex |')
+              lines.append('|---|---|---:|---|---:|---:|---:|---|')
+              for p,title,dl,canon,h1,img,ma,noindex in missing:
+                  lines.append(f'| `{p}` | {title or "YOK"} | {dl} | {canon or "YOK"} | {h1} | {img} | {ma} | {noindex} |')
+          else: lines.append('- Yok')
+          lines += ['', '## Duplicate canonical kontrolü']
+          dup={k:v for k,v in duplicate_canon.items() if k and len(v)>1}
+          if dup:
+              for k,v in dup.items(): lines.append(f'- `{k}` → '+', '.join(f'`{x}`' for x in v))
+          else: lines.append('- Duplicate canonical bulunamadı')
+          lines += ['', '## Tüm sayfalar']
+          lines.append('| Sayfa | Title | Desc | Canonical | H1 | IMG | Alt eksik | Noindex |')
+          lines.append('|---|---|---:|---|---:|---:|---:|---|')
+          for r in rows:
+              if len(r)>=8:
+                  p,title,dl,canon,h1,img,ma,noindex=r
+                  lines.append(f'| `{p}` | {title or "YOK"} | {dl} | {canon or "YOK"} | {h1} | {img} | {ma} | {noindex} |')
+          Path('SEO-TECHNICAL-AUDIT.md').write_text('\n'.join(lines)+'\n',encoding='utf-8')
+
+      - name: Commit audit report
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add SEO-TECHNICAL-AUDIT.md
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "Teknik SEO tam denetim raporu [seo-audit]"
+          git push
