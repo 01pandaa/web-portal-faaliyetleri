@@ -1,0 +1,54 @@
+name: Add latest Google Ads blog card
+
+on:
+  push:
+    paths:
+      - 'blog/google-ads-reklam-gosterim-sorunlari-2026/index.html'
+      - '.github/workflows/add-blog-card.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  add-card:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Add blog card
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('blog/index.html')
+          s = p.read_text(encoding='utf-8')
+          marker = '<a class="card featured" href="/blog/google-ads-reklam-trafigi-analizi/">'
+          if '/blog/google-ads-reklam-gosterim-sorunlari-2026/' not in s:
+              card = '<a class="card featured" href="/blog/google-ads-reklam-gosterim-sorunlari-2026/"><small>GOOGLE ADS / 2026 GÜNCEL</small><h3>Google Ads Reklamları Neden Gösterim Almıyor?</h3><p>Google reklamlarının az gösterim almasının nedenleri: bütçe, teklif, arama hacmi, hedefleme, anahtar kelimeler ve reklam kalitesi.</p></a>'
+              if marker in s:
+                  s = s.replace(marker, card + marker, 1)
+              else:
+                  raise SystemExit('Target Google Ads card marker not found')
+              p.write_text(s, encoding='utf-8')
+          PY
+
+      - name: Commit changes
+        run: |
+          if git diff --quiet; then
+            echo 'No changes needed.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add blog/index.html
+          git commit -m 'Add Google Ads impression troubleshooting blog card [blog-card]'
+          git push
+
+      - name: Remove one-time workflow
+        if: success()
+        run: |
+          rm -f .github/workflows/add-blog-card.yml
+          if git diff --quiet; then exit 0; fi
+          git add .github/workflows/add-blog-card.yml
+          git commit -m 'Remove one-time blog card workflow [blog-card]'
+          git push
