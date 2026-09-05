@@ -1,0 +1,105 @@
+name: SEO positioning upgrade
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  upgrade:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Strengthen service positioning and internal links
+        shell: python
+        run: |
+          from pathlib import Path
+
+          def add_before_main(path, marker, block):
+              p = Path(path)
+              html = p.read_text(encoding='utf-8')
+              if marker in html:
+                  return False
+              idx = html.find('</main>')
+              if idx == -1:
+                  return False
+              html = html[:idx] + block + html[idx:]
+              p.write_text(html, encoding='utf-8')
+              return True
+
+          homepage = '''
+          <!-- WPF-SERVICE-ECOSYSTEM -->
+          <section class="section">
+            <div class="section-heading"><span>07</span><h2>Google Ads, SEO ve reklam trafiğini birlikte yönetin</h2></div>
+            <p>İşletmenizin Google'daki görünürlüğü tek bir kanaldan oluşmaz. <strong>Google Ads, Google Haritalar Reklamları, SEO, Yerel SEO, web sitesi ve reklam trafiği analizi</strong> birbirini destekleyen bir dijital pazarlama sistemi olarak ele alınabilir.</p>
+            <div class="trust-strip">
+              <div class="trust-item"><strong>Google Ads</strong><span>Arama reklamları, kampanya kurulumu, bütçe ve dönüşüm optimizasyonu.</span><br><a href="/google-ads/">Google Ads hizmeti →</a></div>
+              <div class="trust-item"><strong>Google Haritalar Reklamları</strong><span>Yerel müşterilerin işletmenizi bulmasına yardımcı olacak reklam ve görünürlük çalışmaları.</span><br><a href="/harita-reklamlari/">Harita reklamlarını inceleyin →</a></div>
+              <div class="trust-item"><strong>SEO & Yerel SEO</strong><span>Teknik altyapı, içerik mimarisi ve şehir bazlı organik görünürlük çalışmaları.</span><br><a href="/seo/">SEO hizmetini inceleyin →</a></div>
+            </div>
+            <div class="trust-strip">
+              <div class="trust-item"><strong>Reklam Trafiği Analizi</strong><span>Tıklama davranışları, IP sinyalleri ve dönüşüm kalitesi birlikte değerlendirilir.</span><br><a href="/blog/google-ads-reklam-trafigi-analizi/">Trafik analizini okuyun →</a></div>
+              <div class="trust-item"><strong>Adana</strong><span>Google Ads ve yerel SEO çalışmalarını Adana işletmelerinin gerçek hizmet alanına göre planlayın.</span><br><a href="/adana-google-ads/">Adana Google Ads →</a> <a href="/adana-seo-ajansi/">Adana SEO →</a></div>
+              <div class="trust-item"><strong>Mersin</strong><span>Mersin'de Google görünürlüğü için SEO, yerel arama ve reklam çalışmalarını birlikte değerlendirin.</span><br><a href="/mersin-google-ads/">Mersin Google Ads →</a> <a href="/mersin-seo-ajansi/">Mersin SEO →</a></div>
+            </div>
+          </section>
+          '''
+
+          google_ads = '''
+          <!-- WPF-TRAFFIC-BUDGET -->
+          <section class="section dark">
+            <div class="split"><div><div class="eyebrow">REKLAM BÜTÇESİ + TRAFİK KALİTESİ</div><h2>Reklam vermek yetmez.<br>Gelen trafiği de okuyun.</h2></div><div>
+            <p>Bir işletme Google Ads için günlük birkaç bin TL bütçe ayırabilir. Ancak yüksek tıklama sayısı tek başına yüksek müşteri sayısı anlamına gelmez. Arama niyeti, dönüşüm, ziyaret davranışı ve olağandışı trafik sinyalleri birlikte değerlendirilmelidir.</p>
+            <p>Örneğin aylık 70-80 bin TL reklam harcayan bir işletmede yalnızca “kaç tıklama aldık?” sorusuna değil, <strong>“Bu trafiğin ne kadarı nitelikli ve işletme için değer üretiyor?”</strong> sorusuna da bakmak gerekir.</p>
+            <p>Biz Google Ads kampanyasını yönetmenin yanında reklam trafiğini de analiz ediyoruz. IP bilgisi ve davranış sinyalleri, ayrıca incelenmesi gereken şüpheli trafik örüntülerini görünür hale getirmeye yardımcı olabilir. Her tekrarlanan tıklamayı otomatik olarak sahte kabul etmiyoruz.</p>
+            <a class="text-link" href="/blog/google-ads-reklam-trafigi-analizi/">Google Ads reklam trafiği analizi rehberini okuyun →</a>
+            </div></div>
+          </section>
+          <section class="section">
+            <div class="section-heading"><span>07</span><h2>Google Ads + Haritalar + SEO + Yerel SEO</h2></div>
+            <p>Google reklam ajansı olarak yaklaşımımız yalnızca reklam hesabını yönetmekle sınırlı değildir. <a href="/harita-reklamlari/">Google Haritalar Reklamları</a>, <a href="/seo/">SEO</a>, <a href="/bot-tiklama-onleme/">reklam trafiği analizi</a> ve işletmenin web sitesi aynı müşteri yolculuğu içinde değerlendirilebilir.</p>
+            </section>
+          '''
+
+          adana = '''
+          <!-- WPF-TRAFFIC-ADANA -->
+          <section class="section dark">
+            <div class="split"><div><div class="eyebrow">ADANA GOOGLE ADS + TRAFİK ANALİZİ</div><h2>Reklam bütçenizi sadece tıklama sayısıyla ölçmeyin.</h2></div><div>
+            <p>Adana'daki bir işletme her gün yüksek Google Ads bütçesi kullanabilir. Burada önemli olan yalnızca kaç kişinin reklama tıkladığı değil; hangi aramalardan geldikleri, dönüşüm oluşturup oluşturmadıkları ve trafik içinde incelenmesi gereken olağandışı davranışların bulunup bulunmadığıdır.</p>
+            <p>Web Portal Faaliyetleri olarak <strong>Google Ads yönetimi + Google Haritalar Reklamları + SEO + Yerel SEO + reklam trafiği analizi</strong> yaklaşımını birlikte değerlendiriyoruz.</p>
+            <a class="text-link" href="/blog/google-ads-reklam-trafigi-analizi/">Reklam trafiği analizini inceleyin →</a>
+            </div></div>
+          </section>
+          '''
+
+          mersin = '''
+          <!-- WPF-TRAFFIC-MERSIN -->
+          <section class="section dark"><div class="split-grid"><div><div class="eyebrow">MERSİN SEO + GOOGLE ADS</div><h2>Organik görünürlük ve ücretli reklamı birlikte düşünün.</h2></div><div><p style="color:#aeb8be;line-height:1.85">Mersin'deki bir işletme için SEO uzun vadeli organik görünürlüğü desteklerken Google Ads ticari aramalarda ücretli görünürlük sağlayabilir. Google Haritalar reklamları ve reklam trafiği analizi de bu yapının diğer parçalarıdır.</p><p style="color:#aeb8be;line-height:1.85"><strong>Google Ads + Google Haritalar Reklamları + SEO + Yerel SEO + reklam trafiği analizi</strong> birlikte değerlendirildiğinde işletmenin Google'daki müşteri yolculuğu daha bütünsel ele alınabilir.</p><a class="text-link" href="/blog/google-ads-reklam-trafigi-analizi/">Reklam trafiği analizini inceleyin →</a></div></div></section>
+          '''
+
+          blog = Path('blog/index.html')
+          html = blog.read_text(encoding='utf-8')
+          marker = '/blog/google-ads-reklam-trafigi-analizi/'
+          if marker not in html:
+              insert = '<a class="card featured" href="/blog/google-ads-reklam-trafigi-analizi/"><small>REKLAM GÜVENLİĞİ / 2026</small><h3>Google Ads Reklam Trafiği Analizi</h3><p>Tıklama kalitesi, IP sinyalleri, şüpheli trafik, dönüşüm ve reklam bütçesinin daha bilinçli değerlendirilmesi üzerine rehber.</p></a>'
+              pos = html.find('</div></section>', html.find('Google Ads ve reklam yönetimi'))
+              if pos != -1:
+                  html = html[:pos] + insert + html[pos:]
+                  blog.write_text(html, encoding='utf-8')
+
+          add_before_main('index.html', 'WPF-SERVICE-ECOSYSTEM', homepage)
+          add_before_main('google-ads/index.html', 'WPF-TRAFFIC-BUDGET', google_ads)
+          add_before_main('adana-google-ads/index.html', 'WPF-TRAFFIC-ADANA', adana)
+          add_before_main('mersin-seo-ajansi/index.html', 'WPF-TRAFFIC-MERSIN', mersin)
+
+      - name: Commit upgrade
+        shell: bash
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html google-ads/index.html adana-google-ads/index.html mersin-seo-ajansi/index.html blog/index.html
+          if git diff --cached --quiet; then echo 'No changes'; exit 0; fi
+          git commit -m 'SEO: strengthen Google Ads and traffic analysis positioning'
+          git push
