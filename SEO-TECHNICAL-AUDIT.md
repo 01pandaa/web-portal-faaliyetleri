@@ -1,11 +1,11 @@
 # Teknik SEO Denetimi
 
-HTML sayfası: **53**
+HTML sayfası: **54**
 
 ## Özet
 - JSON-LD parse hatası: **0**
 - Eksik/şüpheli temel metadata sayfası: **1**
-- Canonical kullanılan sayfa: **52**
+- Canonical kullanılan sayfa: **53**
 
 ## JSON-LD Hataları
 - Yok
@@ -73,4 +73,5 @@ HTML sayfası: **53**
 | `mersin-google-ads/index.html` | Mersin Google Ads Ajansı 2026 | Google Reklam, SEO ve Web Tasarım | Web Portal Faaliyetleri | 166 | https://www.webportalfaaliyetleri.com/mersin-google-ads/ | 1 | 0 | 0 | False |
 | `mersin-seo-ajansi/index.html` | Mersin SEO Ajansı 2026 | Yerel SEO ve Google Görünürlüğü | Web Portal Faaliyetleri | 145 | https://www.webportalfaaliyetleri.com/mersin-seo-ajansi/ | 1 | 0 | 0 | False |
 | `seo/index.html` | SEO Hizmeti | Teknik SEO, İçerik Mimarisi ve Yerel SEO | Web Portal Faaliyetleri | 154 | https://www.webportalfaaliyetleri.com/seo/ | 1 | 1 | 0 | False |
+| `video/web-portal-faaliyetleri-tanitim/index.html` | Web Portal Faaliyetleri Tanıtım Videosu | Google Ads ve SEO | 130 | https://www.webportalfaaliyetleri.com/video/web-portal-faaliyetleri-tanitim/ | 1 | 0 | 0 | False |
 | `web-tasarim/index.html` | Web Tasarım | SEO Uyumlu Web Sitesi | Web Portal Faaliyetleri | 144 | https://www.webportalfaaliyetleri.com/web-tasarim/ | 1 | 0 | 0 | False |
