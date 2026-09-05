@@ -33,8 +33,10 @@ jobs:
               if 'bot-tiklama-engelleme/tracker/tracker.js' not in text and '</head>' in text:
                   text = text.replace('</head>', tracker + '</head>', 1)
                   changed = True
-              if path.name == 'index.html' and 'id="WPF-CITY-CAROUSEL"' not in text:
+              if path.name == 'index.html' and 'id="WPF-CITY-CAROUSEL"' not in text and '</head>' in text:
                   text = text.replace('</head>', css + '</head>', 1)
+                  changed = True
+              if path.name == 'index.html' and 'dataset.carouselReady' not in text and '</body>' in text:
                   text = text.replace('</body>', js + '</body>', 1)
                   changed = True
               if changed:
