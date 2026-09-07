@@ -1,11 +1,11 @@
 # Teknik SEO Denetimi
 
-HTML sayfası: **54**
+HTML sayfası: **55**
 
 ## Özet
 - JSON-LD parse hatası: **0**
 - Eksik/şüpheli temel metadata sayfası: **1**
-- Canonical kullanılan sayfa: **53**
+- Canonical kullanılan sayfa: **54**
 
 ## JSON-LD Hataları
 - Yok
@@ -48,6 +48,7 @@ HTML sayfası: **54**
 | `blog/teknik-seo-nedir/index.html` | Teknik SEO Nedir? 2026 Tarama, İndeksleme ve Site Sağlığı Rehberi | Web Portal Faaliyetleri | 170 | https://www.webportalfaaliyetleri.com/blog/teknik-seo-nedir/ | 1 | 1 | 0 | False |
 | `bot-tiklama-onleme/index.html` | Bot Tıklama Önleme | Google Ads Tıklama Koruma | Web Portal Faaliyetleri | 139 | https://www.webportalfaaliyetleri.com/bot-tiklama-onleme/ | 1 | 0 | 0 | False |
 | `bursa-google-ads/index.html` | Bursa Google Ads Ajansı 2026 | Google Reklam Yönetimi | Web Portal Faaliyetleri | 152 | https://www.webportalfaaliyetleri.com/bursa-google-ads/ | 1 | 0 | 0 | False |
+| `bursa-google-ads/nilufer/index.html` | Nilüfer Google Ads Ajansı 2026 | Bursa Google Reklam Yönetimi | 132 | https://www.webportalfaaliyetleri.com/bursa-google-ads/nilufer/ | 1 | 0 | 0 | False |
 | `bursa-seo-ajansi/index.html` | Bursa SEO Ajansı 2026 | Bursa Yerel SEO ve Google Görünürlüğü | Web Portal Faaliyetleri | 199 | https://www.webportalfaaliyetleri.com/bursa-seo-ajansi/ | 1 | 0 | 0 | False |
 | `cerez-politikasi/index.html` | Çerez Politikası | Web Portal Faaliyetleri | 69 | https://www.webportalfaaliyetleri.com/cerez-politikasi/ | 1 | 0 | 0 | False |
 | `dijital-reklam/index.html` | Dijital Reklam Yönetimi | Web Portal Faaliyetleri | 119 | https://www.webportalfaaliyetleri.com/dijital-reklam/ | 1 | 1 | 0 | False |
