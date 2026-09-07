@@ -1,11 +1,11 @@
 # Teknik SEO Denetimi
 
-HTML sayfası: **58**
+HTML sayfası: **61**
 
 ## Özet
 - JSON-LD parse hatası: **0**
 - Eksik/şüpheli temel metadata sayfası: **1**
-- Canonical kullanılan sayfa: **57**
+- Canonical kullanılan sayfa: **60**
 
 ## JSON-LD Hataları
 - Yok
@@ -47,7 +47,10 @@ HTML sayfası: **58**
 | `blog/seo-stratejisi-2026/index.html` | SEO Stratejisi 2026: Google'da Görünürlük İçin Kapsamlı Yol Haritası | Web Portal Faaliyetleri | 175 | https://www.webportalfaaliyetleri.com/blog/seo-stratejisi-2026/ | 1 | 0 | 0 | False |
 | `blog/teknik-seo-nedir/index.html` | Teknik SEO Nedir? 2026 Tarama, İndeksleme ve Site Sağlığı Rehberi | Web Portal Faaliyetleri | 170 | https://www.webportalfaaliyetleri.com/blog/teknik-seo-nedir/ | 1 | 1 | 0 | False |
 | `bot-tiklama-onleme/index.html` | Bot Tıklama Önleme | Google Ads Tıklama Koruma | Web Portal Faaliyetleri | 139 | https://www.webportalfaaliyetleri.com/bot-tiklama-onleme/ | 1 | 0 | 0 | False |
+| `bursa-google-ads/gursu/index.html` | Gürsu Google Ads Ajansı 2026 | Bursa | 71 | https://www.webportalfaaliyetleri.com/bursa-google-ads/gursu/ | 1 | 0 | 0 | False |
 | `bursa-google-ads/index.html` | Bursa Google Ads Ajansı 2026 | Google Reklam Yönetimi | Web Portal Faaliyetleri | 152 | https://www.webportalfaaliyetleri.com/bursa-google-ads/ | 1 | 0 | 0 | False |
+| `bursa-google-ads/inegol/index.html` | İnegöl Google Ads Ajansı 2026 | Bursa | 72 | https://www.webportalfaaliyetleri.com/bursa-google-ads/inegol/ | 1 | 0 | 0 | False |
+| `bursa-google-ads/kestel/index.html` | Kestel Google Ads Ajansı 2026 | Bursa | 72 | https://www.webportalfaaliyetleri.com/bursa-google-ads/kestel/ | 1 | 0 | 0 | False |
 | `bursa-google-ads/mudanya/index.html` | Mudanya Google Ads Ajansı 2026 | Bursa | 73 | https://www.webportalfaaliyetleri.com/bursa-google-ads/mudanya/ | 1 | 0 | 0 | False |
 | `bursa-google-ads/nilufer/index.html` | Nilüfer Google Ads Ajansı 2026 | Bursa Google Reklam Yönetimi | 132 | https://www.webportalfaaliyetleri.com/bursa-google-ads/nilufer/ | 1 | 0 | 0 | False |
 | `bursa-google-ads/osmangazi/index.html` | Osmangazi Google Ads Ajansı 2026 | Bursa | 75 | https://www.webportalfaaliyetleri.com/bursa-google-ads/osmangazi/ | 1 | 0 | 0 | False |
