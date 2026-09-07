@@ -1,11 +1,11 @@
 # Teknik SEO Denetimi
 
-HTML sayfası: **61**
+HTML sayfası: **62**
 
 ## Özet
 - JSON-LD parse hatası: **0**
 - Eksik/şüpheli temel metadata sayfası: **1**
-- Canonical kullanılan sayfa: **60**
+- Canonical kullanılan sayfa: **61**
 
 ## JSON-LD Hataları
 - Yok
@@ -48,6 +48,7 @@ HTML sayfası: **61**
 | `blog/teknik-seo-nedir/index.html` | Teknik SEO Nedir? 2026 Tarama, İndeksleme ve Site Sağlığı Rehberi | Web Portal Faaliyetleri | 170 | https://www.webportalfaaliyetleri.com/blog/teknik-seo-nedir/ | 1 | 1 | 0 | False |
 | `bot-tiklama-onleme/index.html` | Bot Tıklama Önleme | Google Ads Tıklama Koruma | Web Portal Faaliyetleri | 139 | https://www.webportalfaaliyetleri.com/bot-tiklama-onleme/ | 1 | 0 | 0 | False |
 | `bursa-google-ads/gursu/index.html` | Gürsu Google Ads Ajansı 2026 | Bursa | 71 | https://www.webportalfaaliyetleri.com/bursa-google-ads/gursu/ | 1 | 0 | 0 | False |
+| `bursa-google-ads/ilceler/index.html` | Bursa Google Ads İlçeleri 2026 | Nilüfer, Osmangazi, Yıldırım ve Diğerleri | 129 | https://www.webportalfaaliyetleri.com/bursa-google-ads/ilceler/ | 1 | 0 | 0 | False |
 | `bursa-google-ads/index.html` | Bursa Google Ads Ajansı 2026 | Google Reklam Yönetimi | Web Portal Faaliyetleri | 152 | https://www.webportalfaaliyetleri.com/bursa-google-ads/ | 1 | 0 | 0 | False |
 | `bursa-google-ads/inegol/index.html` | İnegöl Google Ads Ajansı 2026 | Bursa | 72 | https://www.webportalfaaliyetleri.com/bursa-google-ads/inegol/ | 1 | 0 | 0 | False |
 | `bursa-google-ads/kestel/index.html` | Kestel Google Ads Ajansı 2026 | Bursa | 72 | https://www.webportalfaaliyetleri.com/bursa-google-ads/kestel/ | 1 | 0 | 0 | False |
