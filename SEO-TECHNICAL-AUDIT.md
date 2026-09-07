@@ -1,11 +1,11 @@
 # Teknik SEO Denetimi
 
-HTML sayfası: **62**
+HTML sayfası: **65**
 
 ## Özet
 - JSON-LD parse hatası: **0**
 - Eksik/şüpheli temel metadata sayfası: **1**
-- Canonical kullanılan sayfa: **61**
+- Canonical kullanılan sayfa: **64**
 
 ## JSON-LD Hataları
 - Yok
@@ -41,11 +41,14 @@ HTML sayfası: **62**
 | `blog/google-ads-yonetimi-2026/index.html` | Google Ads Yönetimi 2026 | Kampanya Optimizasyonu Rehberi | 138 | https://www.webportalfaaliyetleri.com/blog/google-ads-yonetimi-2026/ | 1 | 0 | 0 | False |
 | `blog/google-haritalar-reklamlari-2026/index.html` | 2026 Google Haritalar Reklamları ve Yerel Görünürlük Rehberi | Web Portal Faaliyetleri | 146 | https://www.webportalfaaliyetleri.com/blog/google-haritalar-reklamlari-2026/ | 1 | 0 | 0 | False |
 | `blog/google-reklam-verme/index.html` | Google'da Reklam Verme Nasıl Yapılır? 2026 Google Ads Rehberi | 194 | https://www.webportalfaaliyetleri.com/blog/google-reklam-verme/ | 1 | 0 | 0 | False |
-| `blog/index.html` | Google Ads, SEO ve Dijital Reklam Blogu | Web Portal Faaliyetleri | 141 | https://www.webportalfaaliyetleri.com/blog/ | 1 | 0 | 0 | False |
+| `blog/gorsel-seo-rehberi/index.html` | Görsel SEO: Alt Metin, Boyut ve Site Haritası | Web Portal | 126 | https://www.webportalfaaliyetleri.com/blog/gorsel-seo-rehberi/ | 1 | 1 | 0 | False |
+| `blog/index.html` | Google Ads, SEO ve Dijital Reklam Blogu | Web Portal Faaliyetleri | 141 | https://www.webportalfaaliyetleri.com/blog/ | 1 | 3 | 0 | False |
 | `blog/programatik-seo-2026/index.html` | Programatik SEO 2026: Çok Sayfalı SEO Mimarisi Nasıl Kurulur? | Web Portal Faaliyetleri | 165 | https://www.webportalfaaliyetleri.com/blog/programatik-seo-2026/ | 1 | 0 | 0 | False |
+| `blog/search-console-gosterim-dususu/index.html` | Search Console Gösterimleri Neden Düşer? | Web Portal | 147 | https://www.webportalfaaliyetleri.com/blog/search-console-gosterim-dususu/ | 1 | 1 | 0 | False |
 | `blog/seo-hizmeti-nedir-2026/index.html` | SEO Hizmeti Nedir? 2026'da SEO Çalışması Neleri Kapsar? | 152 | https://www.webportalfaaliyetleri.com/blog/seo-hizmeti-nedir-2026/ | 1 | 1 | 0 | False |
 | `blog/seo-stratejisi-2026/index.html` | SEO Stratejisi 2026: Google'da Görünürlük İçin Kapsamlı Yol Haritası | Web Portal Faaliyetleri | 175 | https://www.webportalfaaliyetleri.com/blog/seo-stratejisi-2026/ | 1 | 0 | 0 | False |
 | `blog/teknik-seo-nedir/index.html` | Teknik SEO Nedir? 2026 Tarama, İndeksleme ve Site Sağlığı Rehberi | Web Portal Faaliyetleri | 170 | https://www.webportalfaaliyetleri.com/blog/teknik-seo-nedir/ | 1 | 1 | 0 | False |
+| `blog/video-seo-rehberi/index.html` | Video SEO: Videonuz Google Tarafından Nasıl Bulunur? | Web Portal | 124 | https://www.webportalfaaliyetleri.com/blog/video-seo-rehberi/ | 1 | 1 | 0 | False |
 | `bot-tiklama-onleme/index.html` | Bot Tıklama Önleme | Google Ads Tıklama Koruma | Web Portal Faaliyetleri | 139 | https://www.webportalfaaliyetleri.com/bot-tiklama-onleme/ | 1 | 0 | 0 | False |
 | `bursa-google-ads/gursu/index.html` | Gürsu Google Ads Ajansı 2026 | Bursa | 71 | https://www.webportalfaaliyetleri.com/bursa-google-ads/gursu/ | 1 | 0 | 0 | False |
 | `bursa-google-ads/ilceler/index.html` | Bursa Google Ads İlçeleri 2026 | Nilüfer, Osmangazi, Yıldırım ve Diğerleri | 129 | https://www.webportalfaaliyetleri.com/bursa-google-ads/ilceler/ | 1 | 0 | 0 | False |
@@ -66,7 +69,7 @@ HTML sayfası: **62**
 | `hizmetler/index.html` | Dijital Pazarlama Hizmetleri | Web Portal Faaliyetleri | 139 | https://www.webportalfaaliyetleri.com/hizmetler/ | 1 | 0 | 0 | False |
 | `iade-politikasi/index.html` | İade ve İptal Politikası | Web Portal Faaliyetleri | 91 | https://www.webportalfaaliyetleri.com/iade-politikasi/ | 1 | 0 | 0 | False |
 | `iletisim/index.html` | İletişim | Web Portal Faaliyetleri | 124 | https://www.webportalfaaliyetleri.com/iletisim/ | 1 | 0 | 0 | False |
-| `index.html` | Web Portal Faaliyetleri | Google Ads, SEO ve Dijital Reklam | 130 | https://www.webportalfaaliyetleri.com/ | 1 | 0 | 0 | False |
+| `index.html` | Web Portal Faaliyetleri | Google Ads, SEO ve Dijital Reklam | 130 | https://www.webportalfaaliyetleri.com/ | 1 | 3 | 0 | False |
 | `istanbul-google-ads/atasehir/index.html` | Ataşehir Google Ads Ajansı 2026 | Google Reklam Yönetimi | 131 | https://www.webportalfaaliyetleri.com/istanbul-google-ads/atasehir/ | 1 | 0 | 0 | False |
 | `istanbul-google-ads/bakirkoy/index.html` | Bakırköy Google Ads Ajansı 2026 | Google Reklam Yönetimi | 147 | https://www.webportalfaaliyetleri.com/istanbul-google-ads/bakirkoy/ | 1 | 0 | 0 | False |
 | `istanbul-google-ads/besiktas/index.html` | Beşiktaş Google Ads Ajansı 2026 | Google Reklam Yönetimi | 122 | https://www.webportalfaaliyetleri.com/istanbul-google-ads/besiktas/ | 1 | 0 | 0 | False |
