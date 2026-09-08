@@ -1,11 +1,11 @@
 # Teknik SEO Denetimi
 
-HTML sayfası: **65**
+HTML sayfası: **66**
 
 ## Özet
 - JSON-LD parse hatası: **0**
 - Eksik/şüpheli temel metadata sayfası: **1**
-- Canonical kullanılan sayfa: **64**
+- Canonical kullanılan sayfa: **65**
 
 ## JSON-LD Hataları
 - Yok
@@ -49,6 +49,7 @@ HTML sayfası: **65**
 | `blog/seo-stratejisi-2026/index.html` | SEO Stratejisi 2026: Google'da Görünürlük İçin Kapsamlı Yol Haritası | Web Portal Faaliyetleri | 175 | https://www.webportalfaaliyetleri.com/blog/seo-stratejisi-2026/ | 1 | 1 | 0 | False |
 | `blog/teknik-seo-nedir/index.html` | Teknik SEO Nedir? 2026 Tarama, İndeksleme ve Site Sağlığı Rehberi | Web Portal Faaliyetleri | 170 | https://www.webportalfaaliyetleri.com/blog/teknik-seo-nedir/ | 1 | 2 | 0 | False |
 | `blog/video-seo-rehberi/index.html` | Video SEO: Videonuz Google Tarafından Nasıl Bulunur? | Web Portal | 124 | https://www.webportalfaaliyetleri.com/blog/video-seo-rehberi/ | 1 | 2 | 0 | False |
+| `blog/yerel-seo-google-reklam-ajansi/index.html` | Yerel SEO Nedir? Google Reklam Ajansı ile Bölgesel Görünürlük | Web Portal Faaliyetleri | 154 | https://www.webportalfaaliyetleri.com/blog/yerel-seo-google-reklam-ajansi/ | 1 | 0 | 0 | False |
 | `bot-tiklama-onleme/index.html` | Bot Tıklama Önleme | Google Ads Tıklama Koruma | Web Portal Faaliyetleri | 139 | https://www.webportalfaaliyetleri.com/bot-tiklama-onleme/ | 1 | 1 | 0 | False |
 | `bursa-google-ads/gursu/index.html` | Gürsu Google Ads Ajansı 2026 | Bursa | 71 | https://www.webportalfaaliyetleri.com/bursa-google-ads/gursu/ | 1 | 1 | 0 | False |
 | `bursa-google-ads/ilceler/index.html` | Bursa Google Ads İlçeleri 2026 | Nilüfer, Osmangazi, Yıldırım ve Diğerleri | 129 | https://www.webportalfaaliyetleri.com/bursa-google-ads/ilceler/ | 1 | 1 | 0 | False |
