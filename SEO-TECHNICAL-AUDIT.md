@@ -42,7 +42,7 @@ HTML sayfası: **66**
 | `blog/google-haritalar-reklamlari-2026/index.html` | 2026 Google Haritalar Reklamları ve Yerel Görünürlük Rehberi | Web Portal Faaliyetleri | 146 | https://www.webportalfaaliyetleri.com/blog/google-haritalar-reklamlari-2026/ | 1 | 1 | 0 | False |
 | `blog/google-reklam-verme/index.html` | Google'da Reklam Verme Nasıl Yapılır? 2026 Google Ads Rehberi | 194 | https://www.webportalfaaliyetleri.com/blog/google-reklam-verme/ | 1 | 1 | 0 | False |
 | `blog/gorsel-seo-rehberi/index.html` | Görsel SEO: Alt Metin, Boyut ve Site Haritası | Web Portal | 126 | https://www.webportalfaaliyetleri.com/blog/gorsel-seo-rehberi/ | 1 | 2 | 0 | False |
-| `blog/index.html` | Google Ads, SEO ve Dijital Reklam Blogu | Web Portal Faaliyetleri | 141 | https://www.webportalfaaliyetleri.com/blog/ | 1 | 4 | 0 | False |
+| `blog/index.html` | Google Ads, SEO ve Dijital Reklam Blogu | Web Portal Faaliyetleri | 141 | https://www.webportalfaaliyetleri.com/blog/ | 1 | 5 | 0 | False |
 | `blog/programatik-seo-2026/index.html` | Programatik SEO 2026: Çok Sayfalı SEO Mimarisi Nasıl Kurulur? | Web Portal Faaliyetleri | 165 | https://www.webportalfaaliyetleri.com/blog/programatik-seo-2026/ | 1 | 1 | 0 | False |
 | `blog/search-console-gosterim-dususu/index.html` | Search Console Gösterimleri Neden Düşer? | Web Portal | 147 | https://www.webportalfaaliyetleri.com/blog/search-console-gosterim-dususu/ | 1 | 2 | 0 | False |
 | `blog/seo-hizmeti-nedir-2026/index.html` | SEO Hizmeti Nedir? 2026'da SEO Çalışması Neleri Kapsar? | 152 | https://www.webportalfaaliyetleri.com/blog/seo-hizmeti-nedir-2026/ | 1 | 2 | 0 | False |
