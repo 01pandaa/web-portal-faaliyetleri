@@ -70,7 +70,7 @@ HTML sayfası: **73**
 | `cerez-politikasi/index.html` | Çerez Politikası | Web Portal Faaliyetleri | 69 | https://www.webportalfaaliyetleri.com/cerez-politikasi/ | 1 | 1 | 0 | False |
 | `dijital-reklam/index.html` | Dijital Reklam Yönetimi | Web Portal Faaliyetleri | 119 | https://www.webportalfaaliyetleri.com/dijital-reklam/ | 1 | 2 | 0 | False |
 | `gizlilik-politikasi/index.html` | Gizlilik Politikası | Web Portal Faaliyetleri | 105 | https://www.webportalfaaliyetleri.com/gizlilik-politikasi/ | 1 | 1 | 0 | False |
-| `google-ads/index.html` | Google Ads Yönetimi ve Ajansı | Reklam Yönetimi 2026 | 136 | https://www.webportalfaaliyetleri.com/google-ads/ | 1 | 2 | 0 | False |
+| `google-ads/index.html` | Google Reklam Ajansı | Google Ads Yönetimi – Web Portal | 168 | https://www.webportalfaaliyetleri.com/google-ads/ | 1 | 2 | 0 | False |
 | `hakkimizda/index.html` | Hakkımızda | Web Portal Faaliyetleri | 139 | https://www.webportalfaaliyetleri.com/hakkimizda/ | 1 | 1 | 0 | False |
 | `harita-reklamlari/index.html` | Harita Reklamları | Yerel Google Reklamları | Web Portal Faaliyetleri | 123 | https://www.webportalfaaliyetleri.com/harita-reklamlari/ | 1 | 1 | 0 | False |
 | `hizmetler/index.html` | Dijital Pazarlama Hizmetleri | Web Portal Faaliyetleri | 139 | https://www.webportalfaaliyetleri.com/hizmetler/ | 1 | 1 | 0 | False |
