@@ -13,7 +13,7 @@ HTML sayfası: **73**
 ## Eksik veya kontrol edilmesi gereken sayfalar
 | Sayfa | Title | Desc karakter | Canonical | H1 | IMG | Alt eksik | Noindex |
 |---|---|---:|---|---:|---:|---:|---|
-| `404.html` | Sayfa Bulunamadı | Web Portal Faaliyetleri | 0 | YOK | 1 | 0 | 0 | True |
+| `404.html` | Sayfa Bulunamadı | Web Portal Faaliyetleri | 0 | YOK | 1 | 1 | 0 | True |
 
 ## Duplicate canonical kontrolü
 - Duplicate canonical bulunamadı
@@ -21,7 +21,7 @@ HTML sayfası: **73**
 ## Tüm sayfalar
 | Sayfa | Title | Desc | Canonical | H1 | IMG | Alt eksik | Noindex |
 |---|---|---:|---|---:|---:|---:|---|
-| `404.html` | Sayfa Bulunamadı | Web Portal Faaliyetleri | 0 | YOK | 1 | 0 | 0 | True |
+| `404.html` | Sayfa Bulunamadı | Web Portal Faaliyetleri | 0 | YOK | 1 | 1 | 0 | True |
 | `adana-google-ads/index.html` | Adana Google Ads Ajansı 2026 | Google Reklam Yönetimi | Web Portal Faaliyetleri | 191 | https://www.webportalfaaliyetleri.com/adana-google-ads/ | 1 | 1 | 0 | False |
 | `adana-seo-ajansi/index.html` | Adana SEO Ajansı 2026 | Yerel SEO ve Google Görünürlüğü | Web Portal Faaliyetleri | 176 | https://www.webportalfaaliyetleri.com/adana-seo-ajansi/ | 1 | 2 | 0 | False |
 | `ankara-google-ads/cankaya/index.html` | Çankaya'da Google Ads ve SEO | Web Portal Faaliyetleri | 170 | https://www.webportalfaaliyetleri.com/ankara-google-ads/cankaya/ | 1 | 1 | 0 | False |
@@ -92,5 +92,5 @@ HTML sayfası: **73**
 | `mersin-seo-ajansi/index.html` | Mersin SEO Ajansı 2026 | Yerel SEO ve Google Görünürlüğü | Web Portal Faaliyetleri | 145 | https://www.webportalfaaliyetleri.com/mersin-seo-ajansi/ | 1 | 1 | 0 | False |
 | `seo/index.html` | SEO Hizmeti | Teknik SEO, İçerik Mimarisi ve Yerel SEO | Web Portal Faaliyetleri | 154 | https://www.webportalfaaliyetleri.com/seo/ | 1 | 2 | 0 | False |
 | `sikca-sorulan-sorular/index.html` | Google Reklam Ajansı: Sıkça Sorulan Sorular | Web Portal | 159 | https://www.webportalfaaliyetleri.com/sikca-sorulan-sorular/ | 1 | 1 | 0 | False |
-| `video/web-portal-faaliyetleri-tanitim/index.html` | Web Portal Faaliyetleri Tanıtım Videosu | Google Ads ve SEO | 130 | https://www.webportalfaaliyetleri.com/video/web-portal-faaliyetleri-tanitim/ | 1 | 0 | 0 | False |
+| `video/web-portal-faaliyetleri-tanitim/index.html` | Web Portal Faaliyetleri Tanıtım Videosu | Google Ads ve SEO | 130 | https://www.webportalfaaliyetleri.com/video/web-portal-faaliyetleri-tanitim/ | 1 | 1 | 0 | False |
 | `web-tasarim/index.html` | Web Tasarım | SEO Uyumlu Web Sitesi | Web Portal Faaliyetleri | 144 | https://www.webportalfaaliyetleri.com/web-tasarim/ | 1 | 1 | 0 | False |
