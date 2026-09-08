@@ -1,11 +1,11 @@
 # Teknik SEO Denetimi
 
-HTML sayfası: **66**
+HTML sayfası: **72**
 
 ## Özet
 - JSON-LD parse hatası: **0**
 - Eksik/şüpheli temel metadata sayfası: **1**
-- Canonical kullanılan sayfa: **65**
+- Canonical kullanılan sayfa: **71**
 
 ## JSON-LD Hataları
 - Yok
@@ -24,7 +24,13 @@ HTML sayfası: **66**
 | `404.html` | Sayfa Bulunamadı | Web Portal Faaliyetleri | 0 | YOK | 1 | 0 | 0 | True |
 | `adana-google-ads/index.html` | Adana Google Ads Ajansı 2026 | Google Reklam Yönetimi | Web Portal Faaliyetleri | 191 | https://www.webportalfaaliyetleri.com/adana-google-ads/ | 1 | 1 | 0 | False |
 | `adana-seo-ajansi/index.html` | Adana SEO Ajansı 2026 | Yerel SEO ve Google Görünürlüğü | Web Portal Faaliyetleri | 176 | https://www.webportalfaaliyetleri.com/adana-seo-ajansi/ | 1 | 2 | 0 | False |
+| `ankara-google-ads/cankaya/index.html` | Çankaya'da Google Ads ve SEO | Web Portal Faaliyetleri | 170 | https://www.webportalfaaliyetleri.com/ankara-google-ads/cankaya/ | 1 | 1 | 0 | False |
+| `ankara-google-ads/etimesgut/index.html` | Etimesgut'ta Google Ads ve hizmet sayfası SEO'su | Web Portal Faaliyetleri | 177 | https://www.webportalfaaliyetleri.com/ankara-google-ads/etimesgut/ | 1 | 1 | 0 | False |
 | `ankara-google-ads/index.html` | Ankara Google Ads Ajansı 2026 | Google Reklam, SEO ve Web Tasarım | Web Portal Faaliyetleri | 187 | https://www.webportalfaaliyetleri.com/ankara-google-ads/ | 1 | 1 | 0 | False |
+| `ankara-google-ads/kecioren/index.html` | Keçiören'de Google Ads ve yerel SEO | Web Portal Faaliyetleri | 165 | https://www.webportalfaaliyetleri.com/ankara-google-ads/kecioren/ | 1 | 1 | 0 | False |
+| `ankara-google-ads/mamak/index.html` | Mamak'ta Google Ads ve mobil dönüşüm | Web Portal Faaliyetleri | 163 | https://www.webportalfaaliyetleri.com/ankara-google-ads/mamak/ | 1 | 1 | 0 | False |
+| `ankara-google-ads/sincan/index.html` | Sincan'da Google Ads, SEO ve teklif toplama | Web Portal Faaliyetleri | 160 | https://www.webportalfaaliyetleri.com/ankara-google-ads/sincan/ | 1 | 1 | 0 | False |
+| `ankara-google-ads/yenimahalle/index.html` | Yenimahalle'de Google Ads ve B2B görünürlük | Web Portal Faaliyetleri | 164 | https://www.webportalfaaliyetleri.com/ankara-google-ads/yenimahalle/ | 1 | 1 | 0 | False |
 | `blog/adana-seo-calismasi-2026/index.html` | Adana SEO Ajansı Seçerken Nelere Dikkat Edilmeli? | 2026 Yerel SEO Rehberi | 149 | https://www.webportalfaaliyetleri.com/blog/adana-seo-calismasi-2026/ | 1 | 2 | 0 | False |
 | `blog/bot-tiklama-tespiti/index.html` | Bot Tıklamaları Nasıl Tespit Edilir? | Web Portal Faaliyetleri | 131 | https://www.webportalfaaliyetleri.com/blog/bot-tiklama-tespiti/ | 1 | 1 | 0 | False |
 | `blog/bursa-google-ads-reklam-sorunlari-2026/index.html` | Bursa Google Ads Reklamlarında En Sık Yaşanan Sorunlar | 2026 Rehberi | 198 | https://www.webportalfaaliyetleri.com/blog/bursa-google-ads-reklam-sorunlari-2026/ | 1 | 0 | 0 | False |
