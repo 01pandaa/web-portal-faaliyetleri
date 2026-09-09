@@ -21,7 +21,7 @@
     <image:image>
       <image:loc>https://www.webportalfaaliyetleri.com/assets/web-portal-faaliyetleri-dijital-pazarlama.webp</image:loc>
     </image:image>
-    <lastmod>2026-09-08</lastmod>
+    <lastmod>2026-09-09</lastmod>
   </url>
   <url>
     <loc>https://www.webportalfaaliyetleri.com/seo/</loc>
@@ -55,7 +55,7 @@
     <image:image>
       <image:loc>https://www.webportalfaaliyetleri.com/assets/web-portal-faaliyetleri-dijital-pazarlama.webp</image:loc>
     </image:image>
-    <lastmod>2026-09-07</lastmod>
+    <lastmod>2026-09-09</lastmod>
   </url>
   <url>
     <loc>https://www.webportalfaaliyetleri.com/blog/google-ads-nedir/</loc>
@@ -131,6 +131,7 @@
     <image:image>
       <image:loc>https://www.webportalfaaliyetleri.com/assets/google-ads-donusum-takibi.webp</image:loc>
     </image:image>
+    <lastmod>2026-09-09</lastmod>
   </url>
   <url>
     <loc>https://www.webportalfaaliyetleri.com/blog/google-ads-reklam-trafigi-analizi/</loc>
@@ -307,4 +308,9 @@
     <lastmod>2026-09-08</lastmod>
   </url>
   <url><loc>https://www.webportalfaaliyetleri.com/sikca-sorulan-sorular/</loc><lastmod>2026-09-08</lastmod></url>
+  <url>
+    <loc>https://www.webportalfaaliyetleri.com/blog/google-reklam-ajansi-raporu-2026/</loc>
+    <lastmod>2026-09-09</lastmod>
+    <image:image><image:loc>https://www.webportalfaaliyetleri.com/assets/google-ads-veri-analizi-hedefleme.webp</image:loc></image:image>
+  </url>
 </urlset>
