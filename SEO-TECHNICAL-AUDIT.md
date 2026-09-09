@@ -1,11 +1,11 @@
 # Teknik SEO Denetimi
 
-HTML sayfası: **73**
+HTML sayfası: **74**
 
 ## Özet
 - JSON-LD parse hatası: **0**
 - Eksik/şüpheli temel metadata sayfası: **1**
-- Canonical kullanılan sayfa: **72**
+- Canonical kullanılan sayfa: **73**
 
 ## JSON-LD Hataları
 - Yok
@@ -46,6 +46,7 @@ HTML sayfası: **73**
 | `blog/google-ads-tiklama-saldirisi/index.html` | Google Ads Tıklama Saldırısı Nedir? Şüpheli Tıklamalar | 136 | https://www.webportalfaaliyetleri.com/blog/google-ads-tiklama-saldirisi/ | 1 | 1 | 0 | False |
 | `blog/google-ads-yonetimi-2026/index.html` | Google Ads Yönetimi 2026 | Kampanya Optimizasyonu Rehberi | 138 | https://www.webportalfaaliyetleri.com/blog/google-ads-yonetimi-2026/ | 1 | 1 | 0 | False |
 | `blog/google-haritalar-reklamlari-2026/index.html` | 2026 Google Haritalar Reklamları ve Yerel Görünürlük Rehberi | Web Portal Faaliyetleri | 146 | https://www.webportalfaaliyetleri.com/blog/google-haritalar-reklamlari-2026/ | 1 | 1 | 0 | False |
+| `blog/google-reklam-ajansi-raporu-2026/index.html` | Google Reklam Ajansı Raporu Nasıl Okunur? 2026 Rehberi | 148 | https://www.webportalfaaliyetleri.com/blog/google-reklam-ajansi-raporu-2026/ | 1 | 2 | 0 | False |
 | `blog/google-reklam-verme/index.html` | Google'da Reklam Verme Nasıl Yapılır? 2026 Google Ads Rehberi | 194 | https://www.webportalfaaliyetleri.com/blog/google-reklam-verme/ | 1 | 1 | 0 | False |
 | `blog/gorsel-seo-rehberi/index.html` | Görsel SEO: Alt Metin, Boyut ve Site Haritası | Web Portal | 126 | https://www.webportalfaaliyetleri.com/blog/gorsel-seo-rehberi/ | 1 | 2 | 0 | False |
 | `blog/index.html` | Google Ads, SEO ve Dijital Reklam Blogu | Web Portal Faaliyetleri | 141 | https://www.webportalfaaliyetleri.com/blog/ | 1 | 5 | 0 | False |
