@@ -1,11 +1,11 @@
 # Teknik SEO Denetimi
 
-HTML sayfası: **74**
+HTML sayfası: **75**
 
 ## Özet
 - JSON-LD parse hatası: **0**
 - Eksik/şüpheli temel metadata sayfası: **1**
-- Canonical kullanılan sayfa: **73**
+- Canonical kullanılan sayfa: **74**
 
 ## JSON-LD Hataları
 - Yok
@@ -41,6 +41,7 @@ HTML sayfası: **74**
 | `blog/google-ads-fiyatlari/index.html` | Google Ads Fiyatları 2026: Reklam Bütçesi ve Ajans Ücreti Rehberi | 166 | https://www.webportalfaaliyetleri.com/blog/google-ads-fiyatlari/ | 1 | 1 | 0 | False |
 | `blog/google-ads-gecersiz-tiklama-2026/index.html` | Google Ads Geçersiz Tıklama ve Bot Trafiği 2026 | Reklam Bütçesi Koruma Rehberi | 205 | https://www.webportalfaaliyetleri.com/blog/google-ads-gecersiz-tiklama-2026/ | 1 | 2 | 0 | False |
 | `blog/google-ads-nedir/index.html` | Google Ads Nedir? 2026 Google Reklam Rehberi | Web Portal Faaliyetleri | 129 | https://www.webportalfaaliyetleri.com/blog/google-ads-nedir/ | 1 | 2 | 0 | False |
+| `blog/google-ads-optimizasyon-onerileri-fazla-anahtar-kelime/index.html` | Google Ads’te Daha Fazla Kelime Daha Fazla İş Getirir mi? | Web Portal | 158 | https://www.webportalfaaliyetleri.com/blog/google-ads-optimizasyon-onerileri-fazla-anahtar-kelime/ | 1 | 2 | 0 | False |
 | `blog/google-ads-reklam-gosterim-sorunlari-2026/index.html` | Google Ads Reklamları Neden Gösterim Almıyor? 2026 Rehberi | 174 | https://www.webportalfaaliyetleri.com/blog/google-ads-reklam-gosterim-sorunlari-2026/ | 1 | 2 | 0 | False |
 | `blog/google-ads-reklam-trafigi-analizi/index.html` | Google Ads Reklam Trafiği Analizi 2026 | Tıklama ve IP Analizi | 175 | https://www.webportalfaaliyetleri.com/blog/google-ads-reklam-trafigi-analizi/ | 1 | 2 | 0 | False |
 | `blog/google-ads-tiklama-saldirisi/index.html` | Google Ads Tıklama Saldırısı Nedir? Şüpheli Tıklamalar | 136 | https://www.webportalfaaliyetleri.com/blog/google-ads-tiklama-saldirisi/ | 1 | 1 | 0 | False |
