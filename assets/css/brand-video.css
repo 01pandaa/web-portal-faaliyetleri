@@ -1,0 +1,27 @@
+/* Shared layout for the 30-second introduction and its watch page. */
+.wpf-brand-video{scroll-margin-top:110px}
+.wpf-video-card{display:grid;grid-template-columns:minmax(0,340px) minmax(0,1fr);align-items:center;gap:clamp(28px,5vw,72px);padding:clamp(20px,3vw,40px);border:1px solid #263846;border-radius:24px;background:radial-gradient(ellipse at 100% 0,#142e43,transparent 65%),#0b111b;color:#f4f6fa;box-shadow:0 18px 50px #00000014;overflow:hidden}
+.wpf-video-media{width:100%;max-width:340px;min-width:0;justify-self:center}
+.wpf-video-media video{display:block;width:100%;height:auto;aspect-ratio:9/16;object-fit:contain;border:1px solid #2b4253;border-radius:16px;background:#080f1b}
+.wpf-video-copy{min-width:0}
+.wpf-video-copy h2,.wpf-video-copy h3{margin:0 0 22px;color:#f4f6fa;font-size:clamp(28px,3.4vw,48px);line-height:1.12;letter-spacing:-1px;overflow-wrap:break-word}
+.wpf-video-copy p{margin:0 0 24px;color:#bdc9d6;font-size:17px;line-height:1.7}
+.wpf-video-copy .wpf-video-kicker,.wpf-video-kicker{margin:0 0 18px;color:#94ded3;font-size:12px;font-weight:800;line-height:1.5;letter-spacing:1.8px}
+.wpf-video-services{display:flex;flex-wrap:wrap;gap:10px;list-style:none;margin:0 0 30px;padding:0}
+.wpf-video-services a{display:block;padding:8px 13px;border:1px solid #365064;border-radius:999px;color:#d7e6f4;font-size:13px;line-height:1.5;background:#172838}
+.wpf-video-services a:hover{border-color:#94ded3;color:#b8f5d4}
+.wpf-video-actions{display:flex;align-items:center;flex-wrap:wrap;gap:18px}
+.wpf-video-card .wpf-video-button{display:inline-flex;justify-content:center;padding:13px 20px;border:1px solid #b8f5d4;border-radius:10px;background:#b8f5d4;color:#0a1c26;font-size:15px;font-weight:800;line-height:1.5;text-align:center}
+.wpf-video-card .wpf-video-button:hover{background:#d7ffea}
+.wpf-video-card .wpf-video-link{color:#9bcfff;font-size:14px;font-weight:700;text-decoration:underline;text-underline-offset:4px}
+.wpf-video-card a:focus-visible,.wpf-video-media video:focus-visible{outline:3px solid #b8f5d4;outline-offset:5px}
+main.wpf-video-page{width:100%;max-width:1120px;margin:0 auto;padding:28px 24px 60px}
+.wpf-video-back,.wpf-video-summary a{color:#9bcfff;text-decoration:underline;text-underline-offset:4px}
+.wpf-video-page-heading{margin:24px 0}
+.wpf-video-page-heading h1{font-size:clamp(32px,4.2vw,54px);line-height:1.08;letter-spacing:-1.5px;margin:0}
+.wpf-video-page-heading .wpf-video-kicker{color:#94ded3}
+.wpf-video-summary{max-width:820px;margin:38px 0 0}
+.wpf-video-summary h2{font-size:26px;line-height:1.25;margin:0 0 16px}
+.wpf-video-summary p{color:#bdc9d6;font-size:17px;line-height:1.7;margin:0 0 18px}
+@media(max-width:760px){.wpf-brand-video{scroll-margin-top:200px}.wpf-video-card{grid-template-columns:minmax(0,1fr);gap:28px;padding:20px;border-radius:20px}.wpf-video-media{max-width:320px}.wpf-video-copy h2,.wpf-video-copy h3{font-size:30px;letter-spacing:-.7px}.wpf-video-copy p{font-size:16px}.wpf-video-services{margin-bottom:24px}.wpf-video-actions{align-items:stretch;flex-direction:column;gap:16px}.wpf-video-card .wpf-video-link{text-align:center}.wpf-video-page-heading{margin:22px 0}.wpf-video-summary{margin-top:30px}}
+@media(max-width:380px){main.wpf-video-page{padding:24px 16px 50px}.wpf-video-card{padding:16px}.wpf-video-copy h2,.wpf-video-copy h3{font-size:27px}}
