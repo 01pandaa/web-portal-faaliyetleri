@@ -1,0 +1,38 @@
+name: Fix Home Footer
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    if: ${{ !contains(github.event.head_commit.message, '[footer-fix]') }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Replace homepage footer with working footer structure
+        shell: python
+        run: |
+          from pathlib import Path
+          import re
+
+          p = Path('index.html')
+          text = p.read_text(encoding='utf-8')
+          new_footer = '''<footer class="site-footer"><div class="footer-grid"><div class="footer-brand"><strong>Web Portal Faaliyetleri</strong><p>Google Ads, SEO, web tasarım, dijital reklam ve reklam tıklama güvenliği çözümleri.</p><p style="margin-top:12px">0545 194 40 26</p></div><div class="footer-col"><h3>Kurumsal</h3><a href="/hakkimizda/">Hakkımızda</a><a href="/iletisim/">İletişim</a><a href="/hizmetler/">Hizmetler</a><a href="/blog/">Blog</a></div><div class="footer-col"><h3>Hizmetler</h3><a href="/google-ads/">Google Ads</a><a href="/seo/">SEO</a><a href="/web-tasarim/">Web Tasarım</a><a href="/dijital-reklam/">Dijital Reklam</a><a href="/harita-reklamlari/">Harita Reklamları</a><a href="/bot-tiklama-onleme/">Bot Tıklama Önleme</a></div><div class="footer-col"><h3>Yasal</h3><a href="/gizlilik-politikasi/">Gizlilik Politikası</a><a href="/cerez-politikasi/">Çerez Politikası</a><a href="/kvkk/">KVKK</a><a href="/kullanim-sartlari/">Kullanım Şartları</a><a href="/iade-politikasi/">İade ve İptal</a></div></div><div class="footer-bottom"><div>© 2026 Web Portal Faaliyetleri tarafından oluşturuldu.</div><div><a href="https://www.google.com/search?q=Web+Portal+Faaliyetleri" target="_blank" rel="noopener">Google'da ara</a> · <a href="https://www.google.com/maps/search/?api=1&query=Web+Portal+Faaliyetleri" target="_blank" rel="noopener">Google Maps</a> · <a href="https://wa.me/905451944026" target="_blank" rel="noopener">WhatsApp</a></div></div></footer>'''
+          updated, count = re.subn(r'<footer class="site-footer">.*?</footer>', new_footer, text, count=1, flags=re.S)
+          if count != 1:
+              raise SystemExit(f'Footer replacement count was {count}, expected 1')
+          p.write_text(updated, encoding='utf-8')
+      - name: Commit homepage footer fix
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "Ana sayfa alt kisim footer yapisini duzelt [footer-fix]"
+          git push
