@@ -30,7 +30,7 @@ jobs:
           for path in Path('.').rglob('*.html'):
               if '.git' in path.parts: continue
               s=path.read_text(encoding='utf-8'); changed=False
-              tracker_re=re.compile(r'<script\\b(?=[^>]*bot-tiklama-engelleme/tracker/tracker\\.js)[^>]*></script>', re.I)
+              tracker_re=re.compile(r'<script\b(?=[^>]*bot-tiklama-engelleme/tracker/tracker\.js)[^>]*></script>', re.I)
               if tracker_re.search(s):
                   s=tracker_re.sub('', s)
                   changed=True
