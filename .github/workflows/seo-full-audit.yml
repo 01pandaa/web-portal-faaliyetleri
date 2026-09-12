@@ -21,12 +21,11 @@ jobs:
           from pathlib import Path
           import json, re
           from html.parser import HTMLParser
-          from urllib.parse import urlparse
 
           class PageParser(HTMLParser):
               def __init__(self):
                   super().__init__()
-                  self.title=[]; self.desc=[]; self.canonical=[]; self.h1=0; self.images=[]; self.noindex=False
+                  self.title=[]; self.desc=[]; self.canonical=[]; self.h1=0; self.images=[]; self.noindex=False; self.meta_refresh=False
               def handle_starttag(self, tag, attrs):
                   a=dict(attrs)
                   if tag=='title': self._in_title=True
@@ -35,6 +34,7 @@ jobs:
                   if tag=='meta':
                       if a.get('name','').lower()=='description': self.desc.append(a.get('content',''))
                       if a.get('name','').lower()=='robots' and 'noindex' in a.get('content','').lower(): self.noindex=True
+                      if a.get('http-equiv','').lower()=='refresh': self.meta_refresh=True
                   if tag=='link' and a.get('rel','').lower()=='canonical': self.canonical.append(a.get('href',''))
               def handle_endtag(self, tag):
                   if tag=='title': self._in_title=False
@@ -42,7 +42,7 @@ jobs:
                   if getattr(self,'_in_title',False): self.title.append(data)
 
           pages=sorted(Path('.').rglob('*.html'))
-          rows=[]; json_errors=[]; duplicate_canon={}
+          rows=[]; json_errors=[]; duplicate_canon={}; redirect_pages=set()
           for p in pages:
               text=p.read_text(encoding='utf-8',errors='replace')
               parser=PageParser(); parser._in_title=False
@@ -51,22 +51,28 @@ jobs:
               title=' '.join(parser.title).strip()
               desc=parser.desc[0].strip() if parser.desc else ''
               canon=parser.canonical[0].strip() if parser.canonical else ''
-              duplicate_canon.setdefault(canon,[]).append(str(p)) if canon else None
+              is_redirect = parser.meta_refresh or 'window.location.replace(' in text or 'window.location.href=' in text
+              if is_redirect:
+                  redirect_pages.add(str(p))
+              if canon and not is_redirect:
+                  duplicate_canon.setdefault(canon,[]).append(str(p))
               for block in re.findall(r'<script[^>]+type=["\']application/ld\+json["\'][^>]*>(.*?)</script>',text,re.I|re.S):
                   try: json.loads(block.strip())
                   except Exception as e: json_errors.append(f'{p}: {e}')
               missing_alt=sum(1 for x in parser.images if x is None)
-              rows.append((str(p),title, len(desc), canon, parser.h1, len(parser.images), missing_alt, parser.noindex))
+              rows.append((str(p),title, len(desc), canon, parser.h1, len(parser.images), missing_alt, parser.noindex, is_redirect))
 
           missing=[]
           for r in rows:
-              if len(r)<8: continue
-              p,title,dl,canon,h1,img,missing_alt,noindex=r
+              if len(r)<9: continue
+              p,title,dl,canon,h1,img,missing_alt,noindex,is_redirect=r
+              if is_redirect:
+                  continue
               if not title or not canon or h1!=1 or not dl or missing_alt:
                   missing.append((p,title,dl,canon,h1,img,missing_alt,noindex))
 
           lines=['# Teknik SEO Denetimi','',f'HTML sayfası: **{len(pages)}**','']
-          lines += ['## Özet',f'- JSON-LD parse hatası: **{len(json_errors)}**',f'- Eksik/şüpheli temel metadata sayfası: **{len(missing)}**',f'- Canonical kullanılan sayfa: **{sum(1 for x in rows if len(x)>=8 and x[3])}**','']
+          lines += ['## Özet',f'- JSON-LD parse hatası: **{len(json_errors)}**',f'- Eksik/şüpheli temel metadata sayfası: **{len(missing)}**',f'- Canonical kullanılan sayfa: **{sum(1 for x in rows if len(x)>=9 and x[3])}**',f'- Kasıtlı yönlendirme sayfası: **{len(redirect_pages)}**','']
           lines += ['## JSON-LD Hataları']
           lines += [f'- {x}' for x in json_errors] or ['- Yok']
           lines += ['', '## Eksik veya kontrol edilmesi gereken sayfalar']
@@ -81,13 +87,15 @@ jobs:
           if dup:
               for k,v in dup.items(): lines.append(f'- `{k}` → '+', '.join(f'`{x}`' for x in v))
           else: lines.append('- Duplicate canonical bulunamadı')
+          lines += ['', '## Kasıtlı yönlendirme sayfaları']
+          lines += [f'- `{p}`' for p in sorted(redirect_pages)] or ['- Yok']
           lines += ['', '## Tüm sayfalar']
-          lines.append('| Sayfa | Title | Desc | Canonical | H1 | IMG | Alt eksik | Noindex |')
-          lines.append('|---|---|---:|---|---:|---:|---:|---|')
+          lines.append('| Sayfa | Title | Desc | Canonical | H1 | IMG | Alt eksik | Noindex | Redirect |')
+          lines.append('|---|---|---:|---|---:|---:|---:|---|---|')
           for r in rows:
-              if len(r)>=8:
-                  p,title,dl,canon,h1,img,ma,noindex=r
-                  lines.append(f'| `{p}` | {title or "YOK"} | {dl} | {canon or "YOK"} | {h1} | {img} | {ma} | {noindex} |')
+              if len(r)>=9:
+                  p,title,dl,canon,h1,img,ma,noindex,is_redirect=r
+                  lines.append(f'| `{p}` | {title or "YOK"} | {dl} | {canon or "YOK"} | {h1} | {img} | {ma} | {noindex} | {is_redirect} |')
           Path('SEO-TECHNICAL-AUDIT.md').write_text('\n'.join(lines)+'\n',encoding='utf-8')
 
       - name: Commit audit report
