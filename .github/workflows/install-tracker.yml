@@ -20,7 +20,7 @@ jobs:
         run: |
           from pathlib import Path
           import re, shutil
-          tracker='<script src="https://01pandaa.github.io/bot-tiklama-engelleme/tracker/tracker.js" defer></script>'
+          tracker='<script src="https://01pandaa.github.io/bot-tiklama-engelleme/tracker/tracker.js" data-site-key="2339630da3c935bbe38fb7e2" defer></script>'
           video_old='Generating_digital_map_video_seq…_202609031415.mp4'
           video_new='web-portal-faaliyetleri-tanitim.mp4'
           src=Path('assets')/video_old
@@ -30,6 +30,10 @@ jobs:
           for path in Path('.').rglob('*.html'):
               if '.git' in path.parts: continue
               s=path.read_text(encoding='utf-8'); changed=False
+              tracker_re=re.compile(r'<script\\b(?=[^>]*bot-tiklama-engelleme/tracker/tracker\\.js)[^>]*></script>', re.I)
+              if tracker_re.search(s):
+                  s=tracker_re.sub('', s)
+                  changed=True
               if 'bot-tiklama-engelleme/tracker/tracker.js' not in s and '</head>' in s:
                   s=s.replace('</head>',tracker+'</head>',1); changed=True
               if path.as_posix()=='index.html':
