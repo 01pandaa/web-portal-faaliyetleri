@@ -4,7 +4,7 @@ HTML sayfası: **76**
 
 ## Özet
 - JSON-LD parse hatası: **0**
-- Eksik/şüpheli temel metadata sayfası: **2**
+- Eksik/şüpheli temel metadata sayfası: **1**
 - Canonical kullanılan sayfa: **75**
 
 ## JSON-LD Hataları
@@ -14,7 +14,6 @@ HTML sayfası: **76**
 | Sayfa | Title | Desc karakter | Canonical | H1 | IMG | Alt eksik | Noindex |
 |---|---|---:|---|---:|---:|---:|---|
 | `404.html` | Sayfa Bulunamadı | Web Portal Faaliyetleri | 0 | YOK | 1 | 1 | 0 | True |
-| `blog/google-ads-fiyatlari-2026/index.html` | Google Ads Fiyatları Rehberine Yönlendiriliyorsunuz | 0 | https://www.webportalfaaliyetleri.com/blog/google-ads-fiyatlari/ | 0 | 0 | 0 | False |
 
 ## Duplicate canonical kontrolü
 - `https://www.webportalfaaliyetleri.com/blog/google-ads-fiyatlari/` → `blog/google-ads-fiyatlari/index.html`, `blog/google-ads-fiyatlari-2026/index.html`
@@ -40,7 +39,7 @@ HTML sayfası: **76**
 | `blog/google-ads-anahtar-kelime-secimi-2026/index.html` | Google Ads Anahtar Kelime Seçimi 2026 | Eşleme, Niyet ve Negatif Kelimeler | 190 | https://www.webportalfaaliyetleri.com/blog/google-ads-anahtar-kelime-secimi-2026/ | 1 | 2 | 0 | False |
 | `blog/google-ads-donusum-takibi-2026/index.html` | Google Ads Dönüşüm Takibi 2026: Form, Telefon, WhatsApp ve Satış Ölçümü | 187 | https://www.webportalfaaliyetleri.com/blog/google-ads-donusum-takibi-2026/ | 1 | 2 | 0 | False |
 | `blog/google-ads-fiyatlari/index.html` | Google Ads Fiyatları 2026: Reklam Bütçesi ve Ajans Ücreti Rehberi | 166 | https://www.webportalfaaliyetleri.com/blog/google-ads-fiyatlari/ | 1 | 1 | 0 | False |
-| `blog/google-ads-fiyatlari-2026/index.html` | Google Ads Fiyatları Rehberine Yönlendiriliyorsunuz | 0 | https://www.webportalfaaliyetleri.com/blog/google-ads-fiyatlari/ | 0 | 0 | 0 | False |
+| `blog/google-ads-fiyatlari-2026/index.html` | Google Ads Fiyatları Rehberine Yönlendiriliyorsunuz | 69 | https://www.webportalfaaliyetleri.com/blog/google-ads-fiyatlari/ | 1 | 0 | 0 | True |
 | `blog/google-ads-gecersiz-tiklama-2026/index.html` | Google Ads Geçersiz Tıklama ve Bot Trafiği 2026 | Reklam Bütçesi Koruma Rehberi | 205 | https://www.webportalfaaliyetleri.com/blog/google-ads-gecersiz-tiklama-2026/ | 1 | 2 | 0 | False |
 | `blog/google-ads-nedir/index.html` | Google Ads Nedir? 2026 Google Reklam Rehberi | Web Portal Faaliyetleri | 129 | https://www.webportalfaaliyetleri.com/blog/google-ads-nedir/ | 1 | 2 | 0 | False |
 | `blog/google-ads-optimizasyon-onerileri-fazla-anahtar-kelime/index.html` | Google Ads’te Daha Fazla Kelime Daha Fazla İş Getirir mi? | Web Portal | 158 | https://www.webportalfaaliyetleri.com/blog/google-ads-optimizasyon-onerileri-fazla-anahtar-kelime/ | 1 | 2 | 0 | False |
