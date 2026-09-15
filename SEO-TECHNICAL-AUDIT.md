@@ -1,11 +1,11 @@
 # Teknik SEO Denetimi
 
-HTML sayfası: **76**
+HTML sayfası: **77**
 
 ## Özet
 - JSON-LD parse hatası: **0**
 - Eksik/şüpheli temel metadata sayfası: **1**
-- Canonical kullanılan sayfa: **75**
+- Canonical kullanılan sayfa: **76**
 - Kasıtlı yönlendirme sayfası: **1**
 
 ## JSON-LD Hataları
@@ -45,6 +45,7 @@ HTML sayfası: **76**
 | `blog/google-ads-fiyatlari/index.html` | Google Ads Fiyatları 2026: Reklam Bütçesi ve Ajans Ücreti Rehberi | 166 | https://www.webportalfaaliyetleri.com/blog/google-ads-fiyatlari/ | 1 | 1 | 0 | False | False |
 | `blog/google-ads-fiyatlari-2026/index.html` | Google Ads Fiyatları Rehberine Yönlendiriliyorsunuz | 69 | https://www.webportalfaaliyetleri.com/blog/google-ads-fiyatlari/ | 1 | 0 | 0 | True | True |
 | `blog/google-ads-gecersiz-tiklama-2026/index.html` | Google Ads Geçersiz Tıklama ve Bot Trafiği 2026 | Reklam Bütçesi Koruma Rehberi | 205 | https://www.webportalfaaliyetleri.com/blog/google-ads-gecersiz-tiklama-2026/ | 1 | 2 | 0 | False | False |
+| `blog/google-ads-haritalar-web-tasarim-musteri/index.html` | Google’da Bulunuyorsunuz, Peki Müşteri Neden Aramıyor? | Web Portal | 161 | https://www.webportalfaaliyetleri.com/blog/google-ads-haritalar-web-tasarim-musteri/ | 1 | 2 | 0 | False | False |
 | `blog/google-ads-nedir/index.html` | Google Ads Nedir? 2026 Google Reklam Rehberi | Web Portal Faaliyetleri | 129 | https://www.webportalfaaliyetleri.com/blog/google-ads-nedir/ | 1 | 2 | 0 | False | False |
 | `blog/google-ads-optimizasyon-onerileri-fazla-anahtar-kelime/index.html` | Google Ads’te Daha Fazla Kelime Daha Fazla İş Getirir mi? | Web Portal | 158 | https://www.webportalfaaliyetleri.com/blog/google-ads-optimizasyon-onerileri-fazla-anahtar-kelime/ | 1 | 2 | 0 | False | False |
 | `blog/google-ads-reklam-gosterim-sorunlari-2026/index.html` | Google Ads Reklamları Neden Gösterim Almıyor? 2026 Rehberi | 174 | https://www.webportalfaaliyetleri.com/blog/google-ads-reklam-gosterim-sorunlari-2026/ | 1 | 2 | 0 | False | False |
@@ -83,7 +84,7 @@ HTML sayfası: **76**
 | `hizmetler/index.html` | Dijital Pazarlama Hizmetleri | Web Portal Faaliyetleri | 139 | https://www.webportalfaaliyetleri.com/hizmetler/ | 1 | 1 | 0 | False | False |
 | `iade-politikasi/index.html` | İade ve İptal Politikası | Web Portal Faaliyetleri | 91 | https://www.webportalfaaliyetleri.com/iade-politikasi/ | 1 | 1 | 0 | False | False |
 | `iletisim/index.html` | İletişim | Web Portal Faaliyetleri | 124 | https://www.webportalfaaliyetleri.com/iletisim/ | 1 | 1 | 0 | False | False |
-| `index.html` | Web Portal Faaliyetleri | Google Ads, SEO ve Dijital Reklam | 130 | https://www.webportalfaaliyetleri.com/ | 1 | 5 | 0 | False | False |
+| `index.html` | Web Portal Faaliyetleri | Google Ads, SEO ve Dijital Reklam | 130 | https://www.webportalfaaliyetleri.com/ | 1 | 4 | 0 | False | False |
 | `istanbul-google-ads/atasehir/index.html` | Ataşehir Google Ads Ajansı 2026 | Google Reklam Yönetimi | 131 | https://www.webportalfaaliyetleri.com/istanbul-google-ads/atasehir/ | 1 | 1 | 0 | False | False |
 | `istanbul-google-ads/bakirkoy/index.html` | Bakırköy Google Ads Ajansı 2026 | Google Reklam Yönetimi | 147 | https://www.webportalfaaliyetleri.com/istanbul-google-ads/bakirkoy/ | 1 | 1 | 0 | False | False |
 | `istanbul-google-ads/besiktas/index.html` | Beşiktaş Google Ads Ajansı 2026 | Google Reklam Yönetimi | 122 | https://www.webportalfaaliyetleri.com/istanbul-google-ads/besiktas/ | 1 | 1 | 0 | False | False |
