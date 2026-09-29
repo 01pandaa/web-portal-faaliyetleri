@@ -1,11 +1,11 @@
 # Teknik SEO Denetimi
 
-HTML sayfası: **77**
+HTML sayfası: **78**
 
 ## Özet
 - JSON-LD parse hatası: **0**
 - Eksik/şüpheli temel metadata sayfası: **1**
-- Canonical kullanılan sayfa: **76**
+- Canonical kullanılan sayfa: **77**
 - Kasıtlı yönlendirme sayfası: **1**
 
 ## JSON-LD Hataları
@@ -58,6 +58,7 @@ HTML sayfası: **77**
 | `blog/gorsel-seo-rehberi/index.html` | Görsel SEO: Alt Metin, Boyut ve Site Haritası | Web Portal | 126 | https://www.webportalfaaliyetleri.com/blog/gorsel-seo-rehberi/ | 1 | 2 | 0 | False | False |
 | `blog/index.html` | Google Ads, SEO ve Dijital Reklam Blogu | Web Portal Faaliyetleri | 141 | https://www.webportalfaaliyetleri.com/blog/ | 1 | 5 | 0 | False | False |
 | `blog/programatik-seo-2026/index.html` | Programatik SEO 2026: Çok Sayfalı SEO Mimarisi Nasıl Kurulur? | Web Portal Faaliyetleri | 165 | https://www.webportalfaaliyetleri.com/blog/programatik-seo-2026/ | 1 | 1 | 0 | False | False |
+| `blog/reklam-ajansi-secim-rehberi-2026/index.html` | Reklam Ajansı Seçerken Nelere Bakmalı? 2026 Kontrol Listesi | Web Portal Faaliyetleri | 161 | https://www.webportalfaaliyetleri.com/blog/reklam-ajansi-secim-rehberi-2026/ | 1 | 2 | 0 | False | False |
 | `blog/search-console-gosterim-dususu/index.html` | Search Console Gösterimleri Neden Düşer? | Web Portal | 147 | https://www.webportalfaaliyetleri.com/blog/search-console-gosterim-dususu/ | 1 | 2 | 0 | False | False |
 | `blog/seo-hizmeti-nedir-2026/index.html` | SEO Hizmeti Nedir? 2026'da SEO Çalışması Neleri Kapsar? | 152 | https://www.webportalfaaliyetleri.com/blog/seo-hizmeti-nedir-2026/ | 1 | 2 | 0 | False | False |
 | `blog/seo-stratejisi-2026/index.html` | SEO Stratejisi 2026: Google'da Görünürlük İçin Kapsamlı Yol Haritası | Web Portal Faaliyetleri | 175 | https://www.webportalfaaliyetleri.com/blog/seo-stratejisi-2026/ | 1 | 1 | 0 | False | False |
