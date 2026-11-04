@@ -16,13 +16,12 @@
   var DONUSUMLER = {
     // Telefon numarasına tıklama
     telefon: [
-      'AW-18501236955/X5q5CImJvZYdENvxifZE'
-      // 'AW-18537615740/BURAYA_TELEFON_ETIKETI'
+      'AW-18537615740/-ntTCPKy7rEdEPyitodF' // Tıkla ve ara
     ],
     // WhatsApp butonuna tıklama
+    // Geçici: ayrı "WhatsApp tıklaması" dönüşümü oluşturulana kadar "Tıkla ve ara"ya sayılır.
     whatsapp: [
-      'AW-18501236955/X5q5CImJvZYdENvxifZE'
-      // 'AW-18537615740/BURAYA_WHATSAPP_ETIKETI'
+      'AW-18537615740/-ntTCPKy7rEdEPyitodF'
     ]
   };
 
