@@ -19,9 +19,8 @@
       'AW-18537615740/-ntTCPKy7rEdEPyitodF' // Tıkla ve ara
     ],
     // WhatsApp butonuna tıklama
-    // Geçici: ayrı "WhatsApp tıklaması" dönüşümü oluşturulana kadar "Tıkla ve ara"ya sayılır.
     whatsapp: [
-      'AW-18537615740/-ntTCPKy7rEdEPyitodF'
+      'AW-18537615740/Dx5mCKr56LEdEPyitodF' // Kişi (WhatsApp tıklaması)
     ]
   };
 
